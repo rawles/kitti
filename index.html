@@ -53,17 +53,31 @@ function requestFreshData() {
   getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
+function parseTransaction( transaction ) {
+    // who is mentioned on the left, and what are their weights?
+    // who paid how much on the right?
+    names[0]+=10; // debug
+    names[1]-=10; // debug
+}
+
 function parseLine( line ) {
     entries = line.split(/[ \t]+/); // whitespace separated
     if( entries.length >= 3 ) {
-        timestamp = Date.parse( entries[0] );
-        transaction = entries[1];
-        description = entries[2];
+        parseTransaction( entries[1] );
         return transaction + "<hr>";
     }
     else {
         return line + " ??<hr>";
     }
+}
+
+function printTransactions() {
+    var html = "";
+    for( var i = 0; i < names.length; ++i ) {
+        person = names[i];
+        html += person.full + " : " + str( person.credit ) + "<br>";
+    }
+    return html;
 }
 
 function processData()
@@ -73,7 +87,8 @@ function processData()
         log_html += parseLine( log_lines[i] );
     }
     log_html += "</p>";
-    document.getElementById("currentStatus").innerHTML = "<p>...</p>";
+    var html = printTransactions();
+    document.getElementById("currentStatus").innerHTML = html;
     document.getElementById("log").innerHTML = log_html;
 }
 
