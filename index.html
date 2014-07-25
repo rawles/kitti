@@ -41,10 +41,10 @@ function storeLog( text ) {
 }
 
 function checkAllLoaded() {
-  numFilesLoaded += 1;
-  if(numFilesLoaded == 2) {
-     processData();
-  }
+    numFilesLoaded += 1;
+    if(numFilesLoaded == 2) {
+        processData();
+    }
 }
 
 function requestFreshData() {
@@ -57,9 +57,26 @@ function requestFreshData() {
 
 function parseTransaction( transaction ) {
     // who is mentioned on the left, and what are their weights?
+    var debtors = new Array();
+    var debtor = new Object();
+    debtor.index = 0;
+    debtor.amount = 5.60;
+    debtors.push( debtor );
     // who paid how much on the right?
-    people[0].credit += 10; // debug
-    people[1].credit -= 10; // debug
+    var creditors = new Array();
+    var creditor = new Object();
+    creditor.index = 1;
+    creditor.amount = 5.60;
+    creditors.push( creditor );
+    // make the changes to the summary
+    for( var i = 0; i < debtors.length; ++i ) {
+        var debtor = debtors[i];
+        people[ debtor.index ].credit -= debtor.amount;
+    }
+    for( var i = 0; i < creditors.length; ++i ) {
+        var creditor = creditors[i];
+        people[ creditor.index ].credit -= creditor.amount;
+    }
 }
 
 function parseLine( line ) {
