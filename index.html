@@ -20,10 +20,10 @@ window.onload = function()
       log = xmlhttp.responseText;
       lines = log.split("\n");
       var log_html = "<h3>Parsed transactions:</h3><p>";
+      var unparsed_lines = new Array();
       for( var i = 0; i < lines.length; ++i )
       {
         entries = lines[i].split("\t");
-        var unparsed_lines = new Array();
         if( entries.length >= 3 )
         {
           timestamp = Date.parse(entries[0]);
