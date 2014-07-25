@@ -4,10 +4,10 @@
 <script>
 
 function getAsync(url, func) {
-    var client = new XMLHttpRequest();
-    client.open('GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
-    client.onreadystatechange = func;
-    client.send();
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
+    xmlhttp.onreadystatechange = func;
+    xmlhttp.send();
 }
 
 window.onload = function() {
