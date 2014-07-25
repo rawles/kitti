@@ -22,7 +22,7 @@ window.onload = function()
       log_html = "<h3>Parsed transactions:</h3><p>";
       for( var i = 0; i < lines.length; ++i )
       {
-        entries = line.split("\t");
+        entries = lines[i].split("\t");
         timestamp = Date.parse(entries[0]);
         transaction = entries[1];
         description = entries[2];
