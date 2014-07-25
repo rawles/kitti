@@ -18,7 +18,17 @@ window.onload = function()
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
       log = xmlhttp.responseText;
-      log_html = log.split("\n").join("<hr>");
+      lines = log.split("\n");
+      log_html = "<h3>Parsed transactions:</h3><p>";
+      for( var i = 0; i < size( lines ); ++i )
+      {
+        entries = line.split("\t");
+        timestamp = Date.parse(entries[0]);
+        transaction = entries[1];
+        description = entries[2];
+        log_html += transaction + "(" + description + ")<br>";
+      }
+      log_html += "</p>";
       document.getElementById("myDiv").innerHTML = log_html;
     }
   }
@@ -31,7 +41,7 @@ window.onload = function()
 </head>
 <body>
 
-<div id="myDiv">Loading...</div>
+<div id="myDiv">Loading... (do you have javascript enabled?)</div>
 
 </body>
 </html>
