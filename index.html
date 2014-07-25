@@ -63,7 +63,7 @@ function parseTransaction( transaction ) {
 function parseLine( line ) {
     entries = line.split(/[ \t]+/); // whitespace separated
     if( entries.length >= 3 ) {
-        transaction = entries[1];
+        var transaction = entries[1];
         parseTransaction( transaction );
         return transaction + "<hr>";
     }
