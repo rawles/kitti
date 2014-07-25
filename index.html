@@ -2,47 +2,37 @@
 <html>
 <head>
 <script>
-window.onload = function()
-{
-  var xmlhttp;
-  if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp = new XMLHttpRequest();
-  }
-  else
-  {// code for IE6, IE5
-    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange = function()
-  {
+
+function getAsync(url, func) {
+    var client = new XMLHttpRequest();
+    client.open('GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
+    client.onreadystatechange = func;
+    client.send();
+}
+
+window.onload = function() {
+  var filesLoaded = 0;
+  getAsync("http://rawles.github.io/kitti/kittilog.txt", function() {
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-      log = xmlhttp.responseText;
-      lines = log.split("\n");
-      var log_html = "<h3>Parsed transactions:</h3><p>";
-      var unparsed_lines = new Array();
-      for( var i = 0; i < lines.length; ++i )
-      {
-        entries = lines[i].split(/[ \t]+/);
-        if( entries.length >= 3 )
-        {
-          timestamp = Date.parse(entries[0]);
-          transaction = entries[1];
-          description = entries[2];
-          log_html += transaction + " (" + description + ")<br>";
-        }
-        else {
-          unparsed_lines.push( lines[i] );
-        }
-      }
-      log_html += "</p><h4>Unparsed lines:</h4><p>"+unparsed_lines.join("<br>")+"</p>";
-      document.getElementById("myDiv").innerHTML = log_html;
+      alert(xmlhttp.responseText);
+      checkAllLoaded();
     }
+  });
+  getAsync("http://rawles.github.io/kitti/names.txt", function() {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+      alert(xmlhttp.responseText);
+      checkAllLoaded();
+    }
+  });
+  
+  function checkAllLoaded() {
+      filesLoaded += 1;
+      if(filesLoaded == 2) {
+         alert('both loaded!')
+      }
   }
-  url = "http://rawles.github.io/kitti/kittilog.txt";
-  // trick to avoid getting a cached version of the data: append nonsense to the URL
-  xmlhttp.open("GET", url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
-  xmlhttp.send();
 }
 </script>
 
