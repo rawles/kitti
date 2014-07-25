@@ -19,16 +19,23 @@ window.onload = function()
     {
       log = xmlhttp.responseText;
       lines = log.split("\n");
-      log_html = "<h3>Parsed transactions:</h3><p>";
+      var log_html = "<h3>Parsed transactions:</h3><p>";
       for( var i = 0; i < lines.length; ++i )
       {
         entries = lines[i].split("\t");
-        timestamp = Date.parse(entries[0]);
-        transaction = entries[1];
-        description = entries[2];
-        log_html += transaction + "(" + description + ")<br>";
+        var unparsed_lines = array();
+        if( entries.length >= 3 )
+        {
+          timestamp = Date.parse(entries[0]);
+          transaction = entries[1];
+          description = entries[2];
+          log_html += transaction + " (" + description + ")<br>";
+        }
+        else {
+          unparsed_lines += lines[i];
+        }
       }
-      log_html += "</p>";
+      log_html += "</p><h4>Unparsed lines:</h4><p>"+unparsed_lines.join("<br>")+"</p>";
       document.getElementById("myDiv").innerHTML = log_html;
     }
   }
