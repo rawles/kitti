@@ -3,15 +3,16 @@
 <head>
 <script>
 
-var filesLoaded = 0;
-var names;
-var log_lines;
+var numFilesLoaded = 0;
+var names = new Array();
+var log_lines = new Array();
 
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
+    // need to always request a different URL to avoid getting a cached copy
     http.open( 'GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true );
     http.onreadystatechange = function() {
-        if (http.readyState==4 && http.status==200)
+        if( http.readyState==4 && http.status==200 )
         {
             callback( http.responseText );
             checkAllLoaded();
@@ -20,25 +21,55 @@ function getAsync( url, callback ) {
     http.send();
 }
 
-function processNames( text ) {
-    names = text.split("\n");
+function storeNames( text ) {
+    name_lines = text.split("\n");
+    for( var i = 0; i < name_lines.length; ++i ) {
+        entries = name_lines[i].split(':');
+        if( entries.length < 2 ) {
+            continue;
+        }
+        names.push( entries );
+    }
 }
 
-function processLog( text ) {
+function storeLog( text ) {
     log_lines = text.split("\n");
 }
 
 function checkAllLoaded() {
-  filesLoaded += 1;
-  if(filesLoaded == 2) {
-     alert( names[0] + "," + log_lines[0] );
+  numFilesLoaded += 1;
+  if(numFilesLoaded == 2) {
+     processData();
   }
 }
 
-window.onload = function() {
-  getAsync( "http://rawles.github.io/kitti/kittilog.txt", processLog );
-  getAsync( "http://rawles.github.io/kitti/names.txt", processNames );
+function requestFreshData() {
+  numFilesLoaded = 0;
+  getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
+  getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
+
+function processData()
+{
+    var unparsed_lines = new Array();
+    var html = "<p>";
+    for( var i = 0; i < log_lines.length; ++i ) {
+        var line = log_lines[i];
+        entries = line.split(/[ \t]+/); // whitespace separated
+        if( entries.length < 3 ) {
+            unparsed_lines.push( line );
+        }
+        else {
+            timestamp = Date.parse( entries[0] );
+            transaction = entries[1];
+            description = entries[2];
+            html += transaction + "<hr>";
+        }
+    }
+    document.getElementById("myDiv").innerHTML = html;
+}
+
+window.onload = requestFreshData;
 
 </script>
 
