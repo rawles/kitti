@@ -74,7 +74,7 @@ function parseLine( line ) {
 
 function printTransactions() {
     var html = "";
-    for( var i = 0; i < names.length; ++i ) {
+    for( var i = 0; i < people.length; ++i ) {
         var person = people[i];
         html += person.full + " : " + person.credit.toString() + "<br>";
     }
