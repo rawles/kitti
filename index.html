@@ -18,11 +18,12 @@ window.onload = function()
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
       log = xmlhttp.responseText;
-      log_html = log.split("\n").join("<br>");
+      log_html = log.split("\n").join("<hr>");
       document.getElementById("myDiv").innerHTML = log_html;
     }
   }
   url = "http://rawles.github.io/kitti/kittilog.txt";
+  // trick to avoid getting a cached version of the data: append nonsense to the URL
   xmlhttp.open("GET", url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
   xmlhttp.send();
 }
