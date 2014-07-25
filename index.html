@@ -4,6 +4,8 @@
 <script>
 
 var filesLoaded = 0;
+var names;
+var log_lines;
 
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
@@ -19,17 +21,17 @@ function getAsync( url, callback ) {
 }
 
 function processNames( text ) {
-    alert( text );
+    names = text.split("\n");
 }
 
 function processLog( text ) {
-    alert( text );
+    log_lines = text.split("\n");
 }
 
 function checkAllLoaded() {
   filesLoaded += 1;
   if(filesLoaded == 2) {
-     alert('both loaded!')
+     alert( names[0] + "," + log_line[0] );
   }
 }
 
