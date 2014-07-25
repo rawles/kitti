@@ -79,20 +79,16 @@ function splitKeepDelimiters( text, regex ) {
 function parseTransaction( t ) {
     // who is mentioned on the left, and what are their weights?
     // who paid how much on the right?
-    var debtors = new Array();
-    var creditors = new Array();
     var tokens = t.match( /[A-Z]((\(|\[)[0-9\.]+(\)|\]))?|[0-9\.]+[A-Z]/g );
-    console.log( t );
-    console.log( tokens );
-    // make the changes to the summary
-    for( var i = 0; i < debtors.length; ++i ) {
-        var person = debtors[i];
-        people[ person.initial ].credit -= person.amount;
+    var firstCreditor = -1;
+    for( var j = 0; j < tokens.length; ++j ) {
+        var token = tokens[j];
+        if( token.match( /[0-9\.]+[A-Z]+/ ) ) {
+            firstCreditor = j;
+            break;
+        }
     }
-    for( var i = 0; i < creditors.length; ++i ) {
-        var person = creditors[i];
-        people[ person.initial ].credit += person.amount;
-    }
+    // TODO
 }
 
 function parseLine( line ) {
