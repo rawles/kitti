@@ -32,7 +32,7 @@ window.onload = function()
           log_html += transaction + " (" + description + ")<br>";
         }
         else {
-          unparsed_lines += lines[i];
+          unparsed_lines.push( lines[i] );
         }
       }
       log_html += "</p><h4>Unparsed lines:</h4><p>"+unparsed_lines.join("<br>")+"</p>";
