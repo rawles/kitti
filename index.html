@@ -20,7 +20,8 @@ xmlhttp.onreadystatechange=function()
     document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
     }
   }
-xmlhttp.open("GET","http://rawles.github.io/kitti/kittilog.txt",true);
+url = "http://rawles.github.io/kitti/kittilog.txt";
+xmlhttp.open("GET", url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
 xmlhttp.send();
 }
 </script>
