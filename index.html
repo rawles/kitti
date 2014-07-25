@@ -53,28 +53,28 @@ function requestFreshData() {
   getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
-function parseLine( line, html, unparsed_lines ) {
+function parseLine( line ) {
     entries = line.split(/[ \t]+/); // whitespace separated
-    if( entries.length < 3 ) {
-        unparsed_lines.push( line );
-    }
-    else {
+    if( entries.length >= 3 ) {
         timestamp = Date.parse( entries[0] );
         transaction = entries[1];
         description = entries[2];
-        html += transaction + "<hr>";
+        return transaction + "<hr>";
+    }
+    else {
+        return line + " ??<hr>";
     }
 }
 
 function processData()
 {
-    var unparsed_lines = new Array();
-    var html = "<p>";
+    var log_html = "<p>";
     for( var i = 0; i < log_lines.length; ++i ) {
-        parseLine( log_lines[i], html, unparsed_lines );
+        log_html += parseLine( log_lines[i] );
     }
-    html += "</p>";
-    document.getElementById("myDiv").innerHTML = html;
+    log_html += "</p>";
+    document.getElementById("currentStatus").innerHTML = "<p>...</p>";
+    document.getElementById("log").innerHTML = log_html;
 }
 
 window.onload = requestFreshData;
@@ -91,7 +91,11 @@ instructions how to enable JavaScript in your web browser</a>.
 </head>
 <body>
 
-<div id="myDiv">This text should have been replaced by now. Please contact Tongs Central Control for instructions.</div>
+<div id="currentStatus">This text should have been replaced by now. Please contact Tongs Central Control for instructions.</div>
 
+<h2>Transaction log:</h2>
+<div id="log"></div>
+
+    
 </body>
 </html>
