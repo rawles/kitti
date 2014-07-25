@@ -76,7 +76,7 @@ function printTransactions() {
     var html = "";
     for( var i = 0; i < names.length; ++i ) {
         person = names[i];
-        html += person.full + " : " + str( person.credit ) + "<br>";
+        html += person.full + " : " + person.credit.toString() + "<br>";
     }
     return html;
 }
