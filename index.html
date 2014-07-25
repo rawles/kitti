@@ -5,7 +5,7 @@
 
 var filesLoaded = 0;
 
-function getAsync(url, func) {
+function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
     http.open( 'GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true );
     http.onreadystatechange = function() {
