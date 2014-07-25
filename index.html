@@ -3,37 +3,40 @@
 <head>
 <script>
 
+var filesLoaded = 0;
+
 function getAsync(url, func) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
-    xmlhttp.onreadystatechange = func;
-    xmlhttp.send();
+    var http = new XMLHttpRequest();
+    http.open( 'GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true );
+    http.onreadystatechange = function() {
+        if (http.readyState==4 && http.status==200)
+        {
+            callback( http.responseText );
+            checkAllLoaded();
+        }        
+    http.send();
+}
+
+function processNames( text ) {
+    alert( text );
+}
+
+function processLog( text ) {
+    alert( text );
+}
+
+function checkAllLoaded() {
+  filesLoaded += 1;
+  if(filesLoaded == 2) {
+     alert('both loaded!')
+  }
 }
 
 window.onload = function() {
-  var filesLoaded = 0;
-  getAsync("http://rawles.github.io/kitti/kittilog.txt", function() {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-      alert(xmlhttp.responseText);
-      checkAllLoaded();
-    }
-  });
-  getAsync("http://rawles.github.io/kitti/names.txt", function() {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-      alert(xmlhttp.responseText);
-      checkAllLoaded();
-    }
-  });
-  
-  function checkAllLoaded() {
-      filesLoaded += 1;
-      if(filesLoaded == 2) {
-         alert('both loaded!')
-      }
-  }
+  getAsync( "http://rawles.github.io/kitti/kittilog.txt", processLog );
+  getAsync( "http://rawles.github.io/kitti/names.txt", processNames );
 }
+
 </script>
 
 <noscript>
