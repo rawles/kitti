@@ -81,20 +81,9 @@ function parseTransaction( t ) {
     // who paid how much on the right?
     var debtors = new Array();
     var creditors = new Array();
-    var tokens = splitKeepDelimiters( t, /[0-9\.]+/ );
-    var expectingCloseBracket = false;
-    console.log(t);
-    for( var i = 0; i < tokens.length; ++i ) {
-        var token = tokens[i];
-        console.log(token);
-        for( var j = 0; j < token.length; ++j ) {
-            var c = token[j];
-            if( c in people ) {
-                // TODO
-                console.log( c );
-            }
-        }
-    }
+    var tokens = match( /[A-Z](\([0-9\.]+\)?|[0-9\.]+[A-Z]/g );
+    console.log( t );
+    console.log( tokens );
     // make the changes to the summary
     for( var i = 0; i < debtors.length; ++i ) {
         var person = debtors[i];
