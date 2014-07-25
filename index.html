@@ -62,9 +62,10 @@ function parseTransaction( transaction ) {
     debtor.index = 0;
     debtor.amount = 5.00;
     debtors.push( debtor );
-    debtor.index = 1;
-    debtor.amount = 5.00;
-    debtors.push( debtor );
+    var debtor2 = new Object();
+    debtor2.index = 1;
+    debtor2.amount = 5.00;
+    debtors.push( debtor2 );
     // who paid how much on the right?
     var creditors = new Array();
     var creditor = new Object();
