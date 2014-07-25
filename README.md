@@ -28,14 +28,14 @@ These Excel spreadsheets ([kitti.xls][], [newkitti.xls][]) reveal that Kitti was
 
   [The current status]: http://kitti.tongs.org.uk/
   [using a JavaScript viewer]: http://rawles.github.io/kitti/
-  [The transaction log]: https://raw.githubusercontent.com/rawles/kitti/master/kittilog.txt
-  [letter/name mapping]: https://raw.githubusercontent.com/rawles/kitti/master/names.txt
+  [The transaction log]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/kittilog.txt
+  [letter/name mapping]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/names.txt
   [The HOWTO]: HOWTO.md
   [The source code of the script]: https://github.com/rawles/kitti/blob/gh-pages/kitti.pl
   [the GitHub repository]: https://github.com/rawles/kitti/
   [Bitcoin]: https://bitcoin.org/en/
-  [edit the transaction log]: https://github.com/rawles/kitti/edit/master/kittilog.txt
-  [edit the letter/name mapping]: https://github.com/rawles/kitti/edit/master/names.txt
+  [edit the transaction log]: https://github.com/rawles/kitti/edit/gh-pages/kittilog.txt
+  [edit the letter/name mapping]: https://github.com/rawles/kitti/edit/gh-pages/names.txt
   [conversation about communal costs]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/wiki.pl?CommunalCosts
   [According to lore]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/wiki.pl?Kitti
   [kitti.xls]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/files/kitti.xls
