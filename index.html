@@ -29,6 +29,7 @@ function storeNames( text ) {
             continue;
         }
         var initial = entries[0];
+        people[ initial ] = new Object();
         people[ initial ].full = entries[1];
         people[ initial ].credit = 0.0;
     }
@@ -90,7 +91,7 @@ function parseTransaction( t ) {
             var c = token[j];
             if( c in people ) {
                 // TODO
-                console.log(c);
+                console.log( c );
             }
         }
     }
