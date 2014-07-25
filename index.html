@@ -70,6 +70,7 @@ function processData()
 }
 
 window.onload = requestFreshData;
+setInterval( requestFreshData, 10000 ); // update data every 10s
 
 </script>
 
