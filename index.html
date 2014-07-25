@@ -81,7 +81,7 @@ function parseTransaction( t ) {
     // who paid how much on the right?
     var debtors = new Array();
     var creditors = new Array();
-    var tokens = splitKeepDelimiters( t, /[d.]+/ );
+    var tokens = splitKeepDelimiters( t, /[0-9\.]+/ );
     console.log( t );
     console.log( tokens );
     // make the changes to the summary
