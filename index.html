@@ -48,9 +48,11 @@ function checkAllLoaded() {
 }
 
 function requestFreshData() {
-  numFilesLoaded = 0;
-  getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
-  getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
+    numFilesLoaded = 0;
+    people = new Array();
+    log_lines = new Array();
+    getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
+    getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
 function parseTransaction( transaction ) {
