@@ -81,7 +81,7 @@ function parseTransaction( t ) {
     // who paid how much on the right?
     var debtors = new Array();
     var creditors = new Array();
-    var tokens = match( /[A-Z](\([0-9\.]+\)?|[0-9\.]+[A-Z]/g );
+    var tokens = match( /[A-Z](\([0-9\.]+\))?|[0-9\.]+[A-Z]/g );
     console.log( t );
     console.log( tokens );
     // make the changes to the summary
