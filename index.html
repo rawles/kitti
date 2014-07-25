@@ -4,7 +4,7 @@
 <script>
 
 var numFilesLoaded = 0;
-var names = new Array();
+var people = new Array();
 var log_lines = new Array();
 
 function getAsync( url, callback ) {
@@ -28,11 +28,11 @@ function storeNames( text ) {
         if( entries.length < 2 ) {
             continue;
         }
-        var name = new Object();
-        name.initial = entries[0];
-        name.full = entries[1];
-        name.credit = 0;
-        names.push( name );
+        var person = new Object();
+        person.initial = entries[0];
+        person.full = entries[1];
+        person.credit = 0;
+        people.push( person );
     }
 }
 
@@ -56,8 +56,8 @@ function requestFreshData() {
 function parseTransaction( transaction ) {
     // who is mentioned on the left, and what are their weights?
     // who paid how much on the right?
-    names[0]+=10; // debug
-    names[1]-=10; // debug
+    people[0].credit += 10; // debug
+    people[1].credit -= 10; // debug
 }
 
 function parseLine( line ) {
@@ -75,7 +75,7 @@ function parseLine( line ) {
 function printTransactions() {
     var html = "";
     for( var i = 0; i < names.length; ++i ) {
-        person = names[i];
+        var person = people[i];
         html += person.full + " : " + person.credit.toString() + "<br>";
     }
     return html;
