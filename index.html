@@ -60,13 +60,16 @@ function parseTransaction( transaction ) {
     var debtors = new Array();
     var debtor = new Object();
     debtor.index = 0;
-    debtor.amount = 5.60;
+    debtor.amount = 5.00;
+    debtors.push( debtor );
+    debtor.index = 1;
+    debtor.amount = 5.00;
     debtors.push( debtor );
     // who paid how much on the right?
     var creditors = new Array();
     var creditor = new Object();
     creditor.index = 1;
-    creditor.amount = 5.60;
+    creditor.amount = 10.00;
     creditors.push( creditor );
     // make the changes to the summary
     for( var i = 0; i < debtors.length; ++i ) {
@@ -75,7 +78,7 @@ function parseTransaction( transaction ) {
     }
     for( var i = 0; i < creditors.length; ++i ) {
         var creditor = creditors[i];
-        people[ creditor.index ].credit -= creditor.amount;
+        people[ creditor.index ].credit += creditor.amount;
     }
 }
 
