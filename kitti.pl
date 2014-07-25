@@ -30,7 +30,7 @@ exit;
 
 sub parseline { 
 	my $line = shift;
-	$line =~ s/^\s+//; $line =~ s/\s+$//; my @tokens = split(/\s+/, $line); 
+	$line =~ s/^\s+//; $line =~ s/\s+$//; my @tokens = split(/\|/, $line); 
 	my $time = str2time(shift @tokens); if (!( defined $time )) { return undef; } 
 	my $txn = shift @tokens; $txn =~ s/[^0-9A-Za-z.]//g;
 	if ( ! ( $txn =~ /^[A-Z]+([DE]?[0-9]+(\.[0-9]+)?[DE]?[A-Z])+$/ ) ) { return undef; } 
