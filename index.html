@@ -4,7 +4,7 @@
 <script>
 
 var numFilesLoaded = 0;
-var people = new Array();
+var people = new Object();
 var log_lines = new Array();
 
 function getAsync( url, callback ) {
@@ -28,11 +28,9 @@ function storeNames( text ) {
         if( entries.length < 2 ) {
             continue;
         }
-        var person = new Object();
-        person.initial = entries[0];
-        person.full = entries[1];
-        person.credit = 0.0;
-        people.push( person );
+        var initial = entries[0];
+        people[ initial ].full = entries[1];
+        people[ initial ].credit = 0.0;
     }
 }
 
@@ -49,12 +47,13 @@ function checkAllLoaded() {
 
 function requestFreshData() {
     numFilesLoaded = 0;
-    people = new Array();
+    people = new Object();
     log_lines = new Array();
     getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
     getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
+// http://stackoverflow.com/a/17414844/126823
 function splitKeepDelimiters( text, regex ) {
     var token, index, result = [];
     while (text !== '') {
@@ -82,16 +81,27 @@ function parseTransaction( t ) {
     var debtors = new Array();
     var creditors = new Array();
     var tokens = splitKeepDelimiters( t, /[0-9\.]+/ );
-    console.log( t );
-    console.log( tokens );
+    var expectingCloseBracket = false;
+    console.log(t);
+    for( var i = 0; i < tokens.length; ++i ) {
+        var token = tokens[i];
+        console.log(token);
+        for( var j = 0; j < token.length; ++j ) {
+            var c = token[j];
+            if( c in people ) {
+                // TODO
+                console.log(c);
+            }
+        }
+    }
     // make the changes to the summary
     for( var i = 0; i < debtors.length; ++i ) {
         var person = debtors[i];
-        people[ person.index ].credit -= person.amount;
+        people[ person.initial ].credit -= person.amount;
     }
     for( var i = 0; i < creditors.length; ++i ) {
         var person = creditors[i];
-        people[ person.index ].credit += person.amount;
+        people[ person.initial ].credit += person.amount;
     }
 }
 
