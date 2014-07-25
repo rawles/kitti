@@ -33,11 +33,11 @@ sub parseline {
 	$line =~ s/^\s+//; $line =~ s/\s+$//; my @tokens = split(/\s+/, $line); 
 	my $time = str2time(shift @tokens); if (!( defined $time )) { return undef; } 
 	my $txn = shift @tokens; $txn =~ s/[^0-9A-Za-z.]//g;
-	if ( ! ( $txn =~ /^[A-Z]+([DE]?[0-9.]+[DE]?[A-Z])+$/ ) ) { return undef; } 
-	my ( $from, $to ) = ( $txn =~ /^([A-Z]+)(([DE]?[0-9.]+[DE]?[A-Z])+)$/ );
+	if ( ! ( $txn =~ /^[A-Z]+([DE]?[0-9]+(\.[0-9]+)?[DE]?[A-Z])+$/ ) ) { return undef; } 
+	my ( $from, $to ) = ( $txn =~ /^([A-Z]+)(([DE]?[0-9]+(\.[0-9]+)?[DE]?[A-Z])+)$/ );
 	my @tos = (); push @tos,
-		{'prefix' => $1, 'amount' => $2, 'suffix' => $3, 'to' => $4}
-		while ( $to =~ /([DE]?)([0-9.]+)([DE]?)([A-Z])/g );
+		{'prefix' => $1, 'amount' => $2, 'suffix' => $4, 'to' => $5}
+		while ( $to =~ /([DE]?)([0-9]+(\.[0-9]+)?)([DE]?)([A-Z])/g );
 	#TODO - check all the tos are at the meal (in from)
 	return {'time' => $time, 'from' => $from, 'to' => \@tos, 'desc' => join(" ", @tokens)};
 	}
