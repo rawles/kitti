@@ -2,27 +2,29 @@
 <html>
 <head>
 <script>
-window.onload = function loadLog()
+window.onload = function()
 {
-var xmlhttp;
-if (window.XMLHttpRequest)
+  var xmlhttp;
+  if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+    xmlhttp = new XMLHttpRequest();
   }
-else
+  else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
+  xmlhttp.onreadystatechange = function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+      log = xmlhttp.responseText;
+      log_html = log.split("\n").join("<br>");
+      document.getElementById("myDiv").innerHTML = log;
     }
   }
-url = "http://rawles.github.io/kitti/kittilog.txt";
-xmlhttp.open("GET", url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
-xmlhttp.send();
+  url = "http://rawles.github.io/kitti/kittilog.txt";
+  xmlhttp.open("GET", url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true);
+  xmlhttp.send();
 }
 </script>
 </head>
