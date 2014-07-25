@@ -23,7 +23,7 @@ window.onload = function()
       var unparsed_lines = new Array();
       for( var i = 0; i < lines.length; ++i )
       {
-        entries = lines[i].split("\t");
+        entries = lines[i].split("|");
         if( entries.length >= 3 )
         {
           timestamp = Date.parse(entries[0]);
