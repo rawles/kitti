@@ -55,33 +55,43 @@ function requestFreshData() {
     getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
-function parseTransaction( transaction ) {
+function splitKeepDelimiters( text, regex ) {
+    var token, index, result = [];
+    while (text !== '') {
+        regex.lastIndex = 0;
+        token = regex.exec(text);
+        if (token === null) {
+            break;
+        }
+        index = token.index;
+        if (token[0].length === 0) {
+            index = 1;
+        }
+        result.push(text.substr(0, index));
+        result.push(token[0]);
+        index = index + token[0].length;
+        text = text.slice(index);
+    }
+    result.push(text);
+    return result;
+}
+
+function parseTransaction( t ) {
     // who is mentioned on the left, and what are their weights?
-    var debtors = new Array();
-    var debtor = new Object();
-    debtor.index = 0;
-    debtor.amount = 5.00;
-    debtors.push( debtor );
-    var debtor2 = new Object();
-    debtor2.index = 1;
-    debtor2.amount = 5.00;
-    debtors.push( debtor2 );
     // who paid how much on the right?
+    var debtors = new Array();
     var creditors = new Array();
-    var creditor = new Object();
-    creditor.index = 1;
-    creditor.amount = 10.00;
-    creditors.push( creditor );
+    var tokens = splitKeepDelimiters( t, /[d.]+/ );
+    console.log( t );
+    console.log( tokens );
     // make the changes to the summary
     for( var i = 0; i < debtors.length; ++i ) {
         var person = debtors[i];
         people[ person.index ].credit -= person.amount;
-        console.log( "debiting %o", person );
     }
     for( var i = 0; i < creditors.length; ++i ) {
         var person = creditors[i];
         people[ person.index ].credit += person.amount;
-        console.log( "crediting %o", person );
     }
 }
 
