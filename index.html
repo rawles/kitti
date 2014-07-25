@@ -28,7 +28,11 @@ function storeNames( text ) {
         if( entries.length < 2 ) {
             continue;
         }
-        names.push( entries );
+        var name;
+        name.initial = entries[0];
+        name.full = entries[1];
+        name.credit = 0;
+        names.push( name );
     }
 }
 
@@ -49,23 +53,27 @@ function requestFreshData() {
   getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
+function parseLine( line, html, unparsed_lines ) {
+    entries = line.split(/[ \t]+/); // whitespace separated
+    if( entries.length < 3 ) {
+        unparsed_lines.push( line );
+    }
+    else {
+        timestamp = Date.parse( entries[0] );
+        transaction = entries[1];
+        description = entries[2];
+        html += transaction + "<hr>";
+    }
+}
+
 function processData()
 {
     var unparsed_lines = new Array();
     var html = "<p>";
     for( var i = 0; i < log_lines.length; ++i ) {
-        var line = log_lines[i];
-        entries = line.split(/[ \t]+/); // whitespace separated
-        if( entries.length < 3 ) {
-            unparsed_lines.push( line );
-        }
-        else {
-            timestamp = Date.parse( entries[0] );
-            transaction = entries[1];
-            description = entries[2];
-            html += transaction + "<hr>";
-        }
+        parseLine( log_lines[i], html, unparsed_lines );
     }
+    html += "</p>";
     document.getElementById("myDiv").innerHTML = html;
 }
 
