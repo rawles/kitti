@@ -31,7 +31,7 @@ function storeNames( text ) {
         var person = new Object();
         person.initial = entries[0];
         person.full = entries[1];
-        person.credit = 0;
+        person.credit = 0.0;
         people.push( person );
     }
 }
@@ -74,12 +74,12 @@ function parseTransaction( transaction ) {
     creditors.push( creditor );
     // make the changes to the summary
     for( var i = 0; i < debtors.length; ++i ) {
-        var debtor = debtors[i];
-        people[ debtor.index ].credit -= debtor.amount;
+        var person = debtors[i];
+        people[ person.index ].credit -= person.amount;
     }
     for( var i = 0; i < creditors.length; ++i ) {
-        var creditor = creditors[i];
-        people[ creditor.index ].credit += creditor.amount;
+        var person = creditors[i];
+        people[ person.index ].credit += person.amount;
     }
 }
 
