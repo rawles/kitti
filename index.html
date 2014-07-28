@@ -57,57 +57,83 @@ function requestFreshData() {
 function parseTransaction( t ) {
     // who is mentioned on the left, and what are their weights?
     // who paid how much on the right?
-    var regex_Full = /[A-Z]((\(|\[)[0-9\.]+(\)|\]))?|[0-9\.]+[A-Z]/g;
-    var regex_noWeights = /[A-Z]|[0-9]+[A-Z]/g;
-    var tokens = t.match( regex_noWeights );
+    var regex_noWeightsMatch = /^([A-Z]|[0-9\.]+[A-Z])+$/;
+    var regex_noWeightsGroup = /[A-Z]|[0-9\.]+[A-Z]/g;
+    if( !t.match( regex_noWeightsMatch ) ) {
+        console.log( 'Unparsed transaction: ' + t );
+        return false;
+    }
+    var tokens = t.match( regex_noWeightsGroup );
     var totalCredited = 0.0;
-    var debitors = new Array();
+    var numDebitors = 0;
     console.log( t );
+    console.log( tokens );
+    // first parse for creditors
     for( var j = 0; j < tokens.length; ++j ) {
         var token = tokens[j];
-        if( token.match( /[0-9\.]+[A-Z]+/ ) ) {
+        if( token.match( /^[0-9\.]+[A-Z]$/ ) ) {
             // this is an amount credited
-            console.log('Credit: '+token);
+            var subtokens = token.match( /[0-9.]+|[A-Z]/g );
+            creditAmount = parseFloat(subtokens[0]);
+            initial = subtokens[1];
+            people[ initial ].credit += creditAmount;
+            console.log( 'Credited '+people[ initial].full+' with '+creditAmount+' ukp.' );
+            totalCredited += creditAmount;
         }
-        else {
-            // this is a debtor
-            console.log('Debit: '+token);
+        else if( token.match( /^[A-Z]$/ ) ) {
+            numDebitors++;
         }
     }
-    // TODO
+    var debtPerPerson = totalCredited / numDebitors;
+    console.log( 'Total credited = '+totalCredited+', divided between '+numDebitors );
+    // then parse for debtors
+    for( var j = 0; j < tokens.length; ++j ) {
+        var token = tokens[j];
+        if( token.match( /^[A-Z]$/ ) ) {
+            // this is a debtor
+            initial = token;
+            people[ initial ].credit -= debtPerPerson;
+            console.log( 'Debited '+people[ initial].full+' with '+debtPerPerson+' ukp.' );
+        }
+    }
+    return true;
 }
 
 function parseLine( line ) {
-    entries = line.split(/[ \t]+/); // whitespace separated
-    if( entries.length >= 3 ) {
-        var transaction = entries[1];
-        parseTransaction( transaction );
-        return transaction + "<hr>";
+    var entries = line.match( /(\S+)(?:\s+)(\S+)(?:\s+)(.+)/ );
+    if( entries && entries.length == 4 && parseTransaction( entries[2] ) ) {
+        var timestamp = entries[1];
+        var transaction = entries[2];
+        var description = entries[3];
+        return "Transaction=\""+transaction+"\", Description=\""+description+"\"";
     }
     else {
-        return line + " ??<hr>";
+        return "??";
     }
 }
 
-function printTransactions() {
+function printStatus() {
     var html = "";
-    for( var i = 0; i < people.length; ++i ) {
-        var person = people[i];
+    for( var initial in people ) {
+        var person = people[ initial ];
         html += person.full + " : " + person.credit.toString() + "<br>";
     }
+    // TODO: sort to put lowest first
     return html;
 }
 
-function processData()
-{
-    var log_html = "<p>";
+function processData() {
+    // show the log
+    var log_html = "<table border=\"1\">";
     for( var i = 0; i < log_lines.length; ++i ) {
-        log_html += parseLine( log_lines[i] );
+        var line = log_lines[i];
+        log_html += "<tr><td><b>"+line+"</b></td><td>"+parseLine( line ) + "</td></tr>";
     }
-    log_html += "</p>";
-    var html = printTransactions();
-    document.getElementById("currentStatus").innerHTML = html;
+    log_html += "</table>";
     document.getElementById("log").innerHTML = log_html;
+    // show the status
+    var html = printStatus();
+    document.getElementById("currentStatus").innerHTML = html;
 }
 
 window.onload = requestFreshData;
