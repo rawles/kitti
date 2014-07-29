@@ -40,3 +40,9 @@ These Excel spreadsheets ([kitti.xls][], [newkitti.xls][]) reveal that Kitti was
   [According to lore]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/wiki.pl?Kitti
   [kitti.xls]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/files/kitti.xls
   [newkitti.xls]: https://web.archive.org/web/20080109231307/http://www.tongs.org.uk/files/newkitti.xls
+
+Turtle drew this picture of Kitti for us:
+-----------------------------------------
+![kitti drawing](https://raw.githubusercontent.com/rawles/kitti/gh-pages/kitti.jpg)
+
+And told us that Kitti has a very long nose. A waggy tail. Bulging eyes to see in the dark. A bump on their head. And a big tummy.
