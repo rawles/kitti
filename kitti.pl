@@ -20,7 +20,8 @@ open(I, "/var/www/kitti.tongs.org.uk/html/index.html.t");
 open(O, ">/var/www/kitti.tongs.org.uk/html/index.html");
 my $table = "";
 foreach my $user ( sort{$bal{$a}<=>$bal{$b}} keys %bal ) { 
-	$table .= "<tr><td class=\"user\">".$names{$user}."</td>";
+	$table .= "<tr><td class=\"letter\">$user</td>\n";
+	$table .= "<td class=\"user\">".$names{$user}."</td>";
 	$table .= "<td class=\"balance\">".money($bal{$user})."</td></tr>\n";
 	}
 my $date = scalar localtime time();
