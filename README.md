@@ -3,7 +3,7 @@ Kitti is the Tongs’ system for keeping track of who paid for what and ensuring
 Browse…
 -------
 
--   [The current status][], for easy consulting in restaurants, petrol/train stations and water parks. Also available instantaneously [using a JavaScript viewer][].
+-   The current status, for easy consulting in restaurants, petrol/train stations and water parks, may be consulted instantaneously [using a JavaScript viewer][] or [on a static HTML page][].
 -   [The transaction log][] and [letter/name mapping][] as raw text.
 -   [The HOWTO][] for this game (of minor interest and — like anything with the Tongs — subject to change without reason).
 -   [The source code of the script][] from [the GitHub repository][], for the intrepid and foolhardy. Remember though, like with [Bitcoin][], Kitti is not the script. Kitti is the transaction log.
@@ -26,7 +26,7 @@ The setting then was for a single trip with fixed participants. By comparison, i
 
 These Excel spreadsheets ([kitti.xls][], [newkitti.xls][]) reveal that Kitti was the name of an ancient demon goddess resurrected from the bowels of hell to wreak vengeance, but lost in the internet and trapped in these spreadsheets. You don’t need to know about this to use Kitti.
 
-  [The current status]: http://kitti.tongs.org.uk/
+  [on a static HTML page]: http://kitti.tongs.org.uk/
   [using a JavaScript viewer]: http://rawles.github.io/kitti/
   [The transaction log]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/kittilog.txt
   [letter/name mapping]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/names.txt
