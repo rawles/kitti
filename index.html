@@ -33,7 +33,7 @@ function storeNames( text ) {
         people[ initial ] = new Object();
         people[ initial ].full = entries[1];
         people[ initial ].credit = 0.0;
-		known_identifiers.push( initial );
+        known_identifiers.push( initial );
     }
 }
 
@@ -51,7 +51,7 @@ function checkAllLoaded() {
 function requestFreshData() {
     numFilesLoaded = 0;
     people = new Object();
-	known_identifiers = new Array();
+    known_identifiers = new Array();
     log_lines = new Array();
     getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
     getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
@@ -59,80 +59,80 @@ function requestFreshData() {
 
 function parseLine( line ) {
 
-	var comments = new Array();
+    var comments = new Array();
 
-	var allowed_identifiers = "(?:" + known_identifiers.join('|') + ")";
-	var allowed_currencies = "[DE]";
-	var float_match = "([\\d\\.]+)";
-	var percentage_or_amount = "(?:" + float_match + "(?:\\%)|" + float_match + ")"; // float% or float
-	var bracketed_percentage_or_amount = "(?:\\(" + percentage_or_amount + "\\)|\\[" + percentage_or_amount + "\\])"; // (val) or [val]
-	var debtor_match = "(" + allowed_identifiers + ")(?:" + bracketed_percentage_or_amount + ")?";
-	var creditor_match = "(" + allowed_currencies + ")?(?:" + float_match + ")(" + allowed_identifiers + ")";
+    var allowed_identifiers = "(?:" + known_identifiers.join('|') + ")";
+    var allowed_currencies = "[DE]";
+    var float_match = "([\\d\\.]+)";
+    var percentage_or_amount = "(?:" + float_match + "(?:\\%)|" + float_match + ")"; // float% or float
+    var bracketed_percentage_or_amount = "(?:\\(" + percentage_or_amount + "\\)|\\[" + percentage_or_amount + "\\])"; // (val) or [val]
+    var debtor_match = "(" + allowed_identifiers + ")(?:" + bracketed_percentage_or_amount + ")?";
+    var creditor_match = "(" + allowed_currencies + ")?(?:" + float_match + ")(" + allowed_identifiers + ")";
     var transaction_match = "(" + debtor_match + ")|(" + creditor_match + ")";
-	var line_match = "^(?:\\S+\\s+)(\\S+)(?:\\s+)(.+)$";
+    var line_match = "^(?:\\S+\\s+)(\\S+)(?:\\s+)(.+)$";
 
     var line_tokens = line.match( new RegExp( line_match ) );
-	if( line_tokens.length != 3 ) {
-		comments.push( 'Failed to parse this line at all.' );
-		return comments; // failed to parse this line
-	}
-	var transaction = line_tokens[1];
-	var description = line_tokens[2];
-	comments.push( 'Transaction: ' + transaction );
-	var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
-	if( transaction_tokens.length < 2 ) {
-		comments.push( 'Failed to parse this transaction.' );
-		return comments; // failed to parse the transaction
-	}
-	comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
+    if( !line_tokens || line_tokens.length != 3 ) {
+        comments.push( 'Failed to parse this line at all.' );
+        return comments; // failed to parse this line
+    }
+    var transaction = line_tokens[1];
+    var description = line_tokens[2];
+    comments.push( 'Transaction: ' + transaction );
+    var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
+    if( !transactions_tokens || transaction_tokens.length < 2 ) {
+        comments.push( 'Failed to parse this transaction.' );
+        return comments; // failed to parse the transaction
+    }
+    comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
 
     var totalCredited = 0.0;
-	var amountInFixedDebits = 0;
+    var amountInFixedDebits = 0;
     var weightedDebtors = new Object();
     var totalWeighting = 0.0;
     var fixedDebtors = new Object();
     for( var j in transaction_tokens ) {
         var token = transaction_tokens[j];
-		var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
-		var debtor_subtokens = token.match( new RegExp( debtor_match, "i" ) );
+        var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
+        var debtor_subtokens = token.match( new RegExp( debtor_match, "i" ) );
         if( creditor_subtokens ) {
             // this is an amount credited
-			creditCurrency = creditor_subtokens[1];
-			if( creditCurrency ) {
-				comments.push( 'ERROR: Cannot process foreign currency in this version!' );
-				return comments; // can't process foreign currency at the moment
-			}
+            creditCurrency = creditor_subtokens[1];
+            if( creditCurrency ) {
+                comments.push( 'ERROR: Cannot process foreign currency in this version!' );
+                return comments; // can't process foreign currency at the moment
+            }
             creditAmount = parseFloat( creditor_subtokens[2] );
             initial = creditor_subtokens[3];
             people[ initial ].credit += creditAmount;
             totalCredited += creditAmount;
-			comments.push( 'CREDIT: '+people[initial].full+' gets +'+creditAmount+' ukp.' );
+            comments.push( 'CREDIT: '+people[initial].full+' gets +'+creditAmount+' ukp.' );
         }
         else if( debtor_subtokens ) {
-			initial = debtor_subtokens[1];
-			percentage = parseFloat( debtor_subtokens[2] );
-			debitAmount = parseFloat( debtor_subtokens[5] );
-			if( debitAmount ) {
-				amountInFixedDebits += debitAmount;
+            initial = debtor_subtokens[1];
+            percentage = parseFloat( debtor_subtokens[2] );
+            debitAmount = parseFloat( debtor_subtokens[5] );
+            if( debitAmount ) {
+                amountInFixedDebits += debitAmount;
                 fixedDebtors[ initial ] = debitAmount; // (don't debit yet in case currency is not ukp)
-				comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
-			}
-			else if( percentage ) {
+                comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
+            }
+            else if( percentage ) {
                 var weight = percentage / 100.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-				comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
-			}
-			else {
+                comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
+            }
+            else {
                 var weight = 1.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-				comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
-			}
+                comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
+            }
         }
     }
-	var remainingDebt = totalCredited - amountInFixedDebits;
-	comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
+    var remainingDebt = totalCredited - amountInFixedDebits;
+    comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
     var unitDebt = remainingDebt / totalWeighting;
     comments.push( 'Total debt weighting = '+totalWeighting+' hence unit debt = '+unitDebt+'.' );
     for( var initial in fixedDebtors ) {
@@ -146,7 +146,7 @@ function parseLine( line ) {
         people[ initial ].credit -= debitAmount;
         comments.push( 'DEDIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
-	return comments;
+    return comments;
 }
 
 function printStatus() {
@@ -156,18 +156,18 @@ function printStatus() {
         html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
     }
     // TODO: sort to put lowest first, debts in red, pound symbol
-	html += "</table>";
+    html += "</table>";
     return html;
 }
 
 function processData() {
-	var log_html = "<table border=\"1\">";
+    var log_html = "<table border=\"1\">";
     for( var i in log_lines ) {
-		var line = log_lines[i];
-		var comments = parseLine( line );
-		log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
-	}
-	log_html += "</table>";
+        var line = log_lines[i];
+        var comments = parseLine( line );
+        log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
+    }
+    log_html += "</table>";
     document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
 }
