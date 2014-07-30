@@ -138,13 +138,13 @@ function parseLine( line ) {
     for( var initial in fixedDebtors ) {
         var debitAmount = fixedDebtors[ initial ];
         people[ initial ].credit -= debitAmount;
-        comments.push( 'DEDIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
+        comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
     }
     for( var initial in weightedDebtors ) {
         var weight = weightedDebtors[ initial ];
         var debitAmount = unitDebt * weight;
         people[ initial ].credit -= debitAmount;
-        comments.push( 'DEDIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
+        comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
     return comments;
 }
