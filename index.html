@@ -80,7 +80,7 @@ function parseLine( line ) {
     var description = line_tokens[2];
     comments.push( 'Transaction: ' + transaction );
     var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
-    if( !transactions_tokens || transaction_tokens.length < 2 ) {
+    if( !transaction_tokens || transaction_tokens.length < 2 ) {
         comments.push( 'Failed to parse this transaction.' );
         return comments; // failed to parse the transaction
     }
