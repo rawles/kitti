@@ -5,6 +5,7 @@
 
 var numFilesLoaded = 0;
 var people = new Object();
+var known_identifiers = new Array();
 var log_lines = new Array();
 
 function getAsync( url, callback ) {
@@ -32,6 +33,7 @@ function storeNames( text ) {
         people[ initial ] = new Object();
         people[ initial ].full = entries[1];
         people[ initial ].credit = 0.0;
+		known_identifiers.push( initial );
     }
 }
 
@@ -49,91 +51,125 @@ function checkAllLoaded() {
 function requestFreshData() {
     numFilesLoaded = 0;
     people = new Object();
+	known_identifiers = new Array();
     log_lines = new Array();
     getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
     getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
 }
 
-function parseTransaction( t ) {
-    // who is mentioned on the left, and what are their weights?
-    // who paid how much on the right?
-    var regex_noWeightsMatch = /^([A-Z]|[0-9\.]+[A-Z])+$/;
-    var regex_noWeightsGroup = /[A-Z]|[0-9\.]+[A-Z]/g;
-    if( !t.match( regex_noWeightsMatch ) ) {
-        console.log( 'Unparsed transaction: ' + t );
-        return false;
-    }
-    var tokens = t.match( regex_noWeightsGroup );
-    var totalCredited = 0.0;
-    var numDebitors = 0;
-    console.log( t );
-    console.log( tokens );
-    // first parse for creditors
-    for( var j = 0; j < tokens.length; ++j ) {
-        var token = tokens[j];
-        if( token.match( /^[0-9\.]+[A-Z]$/ ) ) {
-            // this is an amount credited
-            var subtokens = token.match( /[0-9.]+|[A-Z]/g );
-            creditAmount = parseFloat(subtokens[0]);
-            initial = subtokens[1];
-            people[ initial ].credit += creditAmount;
-            console.log( 'Credited '+people[ initial].full+' with '+creditAmount+' ukp.' );
-            totalCredited += creditAmount;
-        }
-        else if( token.match( /^[A-Z]$/ ) ) {
-            numDebitors++;
-        }
-    }
-    var debtPerPerson = totalCredited / numDebitors;
-    console.log( 'Total credited = '+totalCredited+', divided between '+numDebitors );
-    // then parse for debtors
-    for( var j = 0; j < tokens.length; ++j ) {
-        var token = tokens[j];
-        if( token.match( /^[A-Z]$/ ) ) {
-            // this is a debtor
-            initial = token;
-            people[ initial ].credit -= debtPerPerson;
-            console.log( 'Debited '+people[ initial].full+' with '+debtPerPerson+' ukp.' );
-        }
-    }
-    return true;
-}
-
 function parseLine( line ) {
-    var entries = line.match( /(\S+)(?:\s+)(\S+)(?:\s+)(.+)/ );
-    if( entries && entries.length == 4 && parseTransaction( entries[2] ) ) {
-        var timestamp = entries[1];
-        var transaction = entries[2];
-        var description = entries[3];
-        return "Transaction=\""+transaction+"\", Description=\""+description+"\"";
+
+	var comments = new Array();
+
+	var allowed_identifiers = "(?:" + known_identifiers.join('|') + ")";
+	var allowed_currencies = "[DE]";
+	var float_match = "([\\d\\.]+)";
+	var percentage_or_amount = "(?:" + float_match + "(?:\\%)|" + float_match + ")"; // float% or float
+	var bracketed_percentage_or_amount = "(?:\\(" + percentage_or_amount + "\\)|\\[" + percentage_or_amount + "\\])"; // (val) or [val]
+	var debtor_match = "(" + allowed_identifiers + ")(?:" + bracketed_percentage_or_amount + ")?";
+	var creditor_match = "(" + allowed_currencies + ")?(?:" + float_match + ")(" + allowed_identifiers + ")";
+    var transaction_match = "(" + debtor_match + ")|(" + creditor_match + ")";
+	var line_match = "^(?:\\S+\\s+)(\\S+)(?:\\s+)(.+)$";
+
+    var line_tokens = line.match( new RegExp( line_match ) );
+	if( line_tokens.length != 3 ) {
+		comments.push( 'Failed to parse this line at all.' );
+		return comments; // failed to parse this line
+	}
+	var transaction = line_tokens[1];
+	var description = line_tokens[2];
+	comments.push( 'Transaction: ' + transaction );
+	var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
+	if( transaction_tokens.length < 2 ) {
+		comments.push( 'Failed to parse this transaction.' );
+		return comments; // failed to parse the transaction
+	}
+	comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
+
+    var totalCredited = 0.0;
+	var amountInFixedDebits = 0;
+    var weightedDebtors = new Object();
+    var totalWeighting = 0.0;
+    var fixedDebtors = new Object();
+    for( var j in transaction_tokens ) {
+        var token = transaction_tokens[j];
+		var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
+		var debtor_subtokens = token.match( new RegExp( debtor_match, "i" ) );
+        if( creditor_subtokens ) {
+            // this is an amount credited
+			creditCurrency = creditor_subtokens[1];
+			if( creditCurrency ) {
+				comments.push( 'ERROR: Cannot process foreign currency in this version!' );
+				return comments; // can't process foreign currency at the moment
+			}
+            creditAmount = parseFloat( creditor_subtokens[2] );
+            initial = creditor_subtokens[3];
+            people[ initial ].credit += creditAmount;
+            totalCredited += creditAmount;
+			comments.push( 'CREDIT: '+people[initial].full+' gets +'+creditAmount+' ukp.' );
+        }
+        else if( debtor_subtokens ) {
+			initial = debtor_subtokens[1];
+			percentage = parseFloat( debtor_subtokens[2] );
+			debitAmount = parseFloat( debtor_subtokens[5] );
+			if( debitAmount ) {
+				amountInFixedDebits += debitAmount;
+                fixedDebtors[ initial ] = debitAmount; // (don't debit yet in case currency is not ukp)
+				comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
+			}
+			else if( percentage ) {
+                var weight = percentage / 100.0;
+                totalWeighting += weight;
+                weightedDebtors[ initial ] = weight;
+				comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
+			}
+			else {
+                var weight = 1.0;
+                totalWeighting += weight;
+                weightedDebtors[ initial ] = weight;
+				comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
+			}
+        }
     }
-    else {
-        return "??";
+	var remainingDebt = totalCredited - amountInFixedDebits;
+	comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
+    var unitDebt = remainingDebt / totalWeighting;
+    comments.push( 'Total debt weighting = '+totalWeighting+' hence unit debt = '+unitDebt+'.' );
+    for( var initial in fixedDebtors ) {
+        var debitAmount = fixedDebtors[ initial ];
+        people[ initial ].credit -= debitAmount;
+        comments.push( 'DEDIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
     }
+    for( var initial in weightedDebtors ) {
+        var weight = weightedDebtors[ initial ];
+        var debitAmount = unitDebt * weight;
+        people[ initial ].credit -= debitAmount;
+        comments.push( 'DEDIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
+    }
+	return comments;
 }
 
 function printStatus() {
-    var html = "";
+    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
     for( var initial in people ) {
         var person = people[ initial ];
-        html += person.full + " : " + person.credit.toString() + "<br>";
+        html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
     }
-    // TODO: sort to put lowest first
+    // TODO: sort to put lowest first, debts in red, pound symbol
+	html += "</table>";
     return html;
 }
 
 function processData() {
-    // show the log
-    var log_html = "<table border=\"1\">";
-    for( var i = 0; i < log_lines.length; ++i ) {
-        var line = log_lines[i];
-        log_html += "<tr><td><b>"+line+"</b></td><td>"+parseLine( line ) + "</td></tr>";
-    }
-    log_html += "</table>";
+	var log_html = "<table border=\"1\">";
+    for( var i in log_lines ) {
+		var line = log_lines[i];
+		var comments = parseLine( line );
+		log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
+	}
+	log_html += "</table>";
+    document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
-    // show the status
-    var html = printStatus();
-    document.getElementById("currentStatus").innerHTML = html;
 }
 
 window.onload = requestFreshData;
@@ -150,10 +186,9 @@ instructions how to enable JavaScript in your web browser</a>.
 </head>
 <body>
 
-<div id="currentStatus">This text should have been replaced by now. Please contact Tongs Central Control for instructions.</div>
+<div id="currentStatus">status</div>
 
-<h2>Transaction log:</h2>
-<div id="log"></div>
+<div id="log">log</div>
 
     
 </body>
