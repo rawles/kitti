@@ -20,9 +20,11 @@ open(I, "/var/www/rawl.es/html/kitti/index.shtml.t");
 open(O, ">/var/www/rawl.es/html/kitti/index.shtml");
 my $table = "";
 foreach my $user ( sort{$bal{$a}<=>$bal{$b}} keys %bal ) { 
-	$table .= "<tr><td class=\"letter\">$user</td>\n";
-	$table .= "<td class=\"user\">".$names{$user}."</td>";
-	$table .= "<td class=\"balance\">".money($bal{$user})."</td></tr>\n";
+	$table .= "<tr><td class=\"text\">\n";
+	$table .= "<span class=\"symbol\">$user</span> \n";
+	$table .= $names{$user};
+	$table .= "</td>";
+	$table .= "<td class=\"number\">".money($bal{$user})."</td></tr>\n";
 	}
 my $date = scalar localtime time();
 while(<I>) { s/%TABLE%/$table/g; s/%DATE%/$date/g; print O $_; };
