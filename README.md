@@ -26,7 +26,7 @@ The setting then was for a single trip with fixed participants. By comparison, i
 
 These Excel spreadsheets ([kitti.xls][], [newkitti.xls][]) reveal that Kitti was the name of an ancient demon goddess resurrected from the bowels of hell to wreak vengeance, but lost in the internet and trapped in these spreadsheets. You don’t need to know about this to use Kitti.
 
-  [on a static HTML page]: http://kitti.tongs.org.uk/
+  [on a static HTML page]: http://rawl.es/kitti/
   [using a JavaScript viewer]: http://rawles.github.io/kitti/
   [The transaction log]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/kittilog.txt
   [letter/name mapping]: https://raw.githubusercontent.com/rawles/kitti/gh-pages/names.txt
