@@ -16,8 +16,8 @@ foreach my $line ( split("\n", $log) ) {
 	foreach my $to (@{$lt->{to}}) { $bal{uc($to->{to})} += $to->{amount} };  
 	}
 
-open(I, "/var/www/kitti.tongs.org.uk/html/index.html.t");
-open(O, ">/var/www/kitti.tongs.org.uk/html/index.html");
+open(I, "/var/www/rawl.es/html/kitti/index.shtml.t");
+open(O, ">/var/www/rawl.es/html/kitti/index.shtml");
 my $table = "";
 foreach my $user ( sort{$bal{$a}<=>$bal{$b}} keys %bal ) { 
 	$table .= "<tr><td class=\"letter\">$user</td>\n";
