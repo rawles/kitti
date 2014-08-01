@@ -59,6 +59,10 @@ function requestFreshData() {
 
 function parseLine( line ) {
 
+    if( !line.match( /\S/g ) ) {
+        return; // blank line, ignore
+    }
+
     var comments = new Array();
 
     var allowed_identifiers = "(?:" + known_identifiers.join('|') + ")";
@@ -73,18 +77,18 @@ function parseLine( line ) {
 
     var line_tokens = line.match( new RegExp( line_match ) );
     if( !line_tokens || line_tokens.length != 3 ) {
-        comments.push( 'Failed to parse this line at all.' );
+        comments.push( 'ERROR: Failed to parse this line at all.' );
         return comments; // failed to parse this line
     }
     var transaction = line_tokens[1];
     var description = line_tokens[2];
-    comments.push( 'Transaction: ' + transaction );
+    //comments.push( 'Transaction: ' + transaction );
     var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
     if( !transaction_tokens || transaction_tokens.length < 2 ) {
-        comments.push( 'Failed to parse this transaction.' );
+        comments.push( 'ERROR: Failed to parse this transaction.' );
         return comments; // failed to parse the transaction
     }
-    comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
+    //comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
 
     var totalCredited = 0.0;
     var amountInFixedDebits = 0;
@@ -115,31 +119,31 @@ function parseLine( line ) {
             if( debitAmount ) {
                 amountInFixedDebits += debitAmount;
                 fixedDebtors[ initial ] = debitAmount; // (don't debit yet in case currency is not ukp)
-                comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
+                //comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
             }
             else if( percentage ) {
                 var weight = percentage / 100.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-                comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
+                //comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
             }
             else {
                 var weight = 1.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-                comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
+                //comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
             }
         }
     }
     var remainingDebt = totalCredited - amountInFixedDebits;
-    comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
     var unitDebt = remainingDebt / totalWeighting;
-    comments.push( 'Total debt weighting = '+totalWeighting+' hence unit debt = '+unitDebt+'.' );
+    //comments.push( 'Total debt weighting = '+totalWeighting+' hence unit debt = '+unitDebt+'.' );
     for( var initial in fixedDebtors ) {
         var debitAmount = fixedDebtors[ initial ];
         people[ initial ].credit -= debitAmount;
         comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
     }
+    //comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
     for( var initial in weightedDebtors ) {
         var weight = weightedDebtors[ initial ];
         var debitAmount = unitDebt * weight;
@@ -165,7 +169,9 @@ function processData() {
     for( var i in log_lines ) {
         var line = log_lines[i];
         var comments = parseLine( line );
-        log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
+        if( comments ) {
+            log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
+        }
     }
     log_html += "</table>";
     document.getElementById("currentStatus").innerHTML = printStatus();
