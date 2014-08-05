@@ -6,6 +6,8 @@ a(1,2)=0.3;
 a(1,3)=0.3;
 a(2,3)=0.3;
 a(3,4)=0.1;
+dt = 1.0;  % size of timestep
+a = dt * a / sum( a(:) ); % normalize to sum to dt for small transaction steps
 a = max( a, a' ); % (make symmetrical)
 
 % fill in the diagonal with stay-here probabilities to make a transition matrix
@@ -25,10 +27,12 @@ v0 = [ 5 5 -10 0 ]; % initial condition before swimming
 vc = v0 + [ 0 0 5 -5 ]; % C pays
 vd = v0 + [ 0 0 -5 5 ]; % D pays
 
+np = 20 / dt;
+
 % see what happens over time if C pays for swimming:
 v = vc;
 unhealth1 = [];
-for i = 1:20
+for i = 1:np
     unhealth1( end+1 ) = sum( abs( v ) ) / 2; % half sum of all absolute values says how much credit is in the system
     v = v * tm;
 end 
@@ -36,7 +40,7 @@ end
 % see what happens over time if D pays for swimming:
 v = vd;
 unhealth2 = [];
-for i = 1:20
+for i = 1:np
     unhealth2( end+1 ) = sum( abs( v ) ) / 2;
     v = v * tm;
 end 
