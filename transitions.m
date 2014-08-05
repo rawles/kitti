@@ -30,9 +30,10 @@ vd = v0 + [ 0 0 -5 5 ]; % D pays
 np = 20 / dt;
 
 % see what happens over time if C pays for swimming:
+steps = 1:np;
 v = vc;
 unhealth1 = [];
-for i = 1:np
+for i = steps
     unhealth1( end+1 ) = sum( abs( v ) ) / 2; % half sum of all absolute values says how much credit is in the system
     v = v * tm;
 end 
@@ -40,7 +41,7 @@ end
 % see what happens over time if D pays for swimming:
 v = vd;
 unhealth2 = [];
-for i = 1:np
+for i = steps
     unhealth2( end+1 ) = sum( abs( v ) ) / 2;
     v = v * tm;
 end 
@@ -48,19 +49,21 @@ end
 % find the area under each curve
 cost_C = 0;
 cost_D = 0;
-for i = 0:10000
-    cost_C = cost_C + sum( abs( vc * tm^i ) ) / 2;
-    cost_D = cost_D + sum( abs( vd * tm^i ) ) / 2;
+for i = 0:(100/dt)
+    cost_C = cost_C + dt * sum( abs( vc * tm^i ) ) / 2;
+    cost_D = cost_D + dt * sum( abs( vd * tm^i ) ) / 2;
 end
+
 
 % plot the two curves
 figure;
 hold on;
-plot( unhealth1, 'b.-' );
-plot( unhealth2, 'r.-' );
+plot( dt*steps, unhealth1, 'b.-' );
+plot( dt*steps, unhealth2, 'r.-' );
 legend( sprintf( 'if C pays: %.2f', cost_C ), sprintf( 'if D pays: %.2f', cost_D ) );
 ylabel( 'credit in the system (ukp)' );
 xlabel( 'time' );
+xlim( [ min(dt*steps), max(dt*steps) ] );
 title( sprintf( 'robot club / swimming scenario starting from %s', mat2str( v0 ) ) );
 disp('Press any key to continue');
 pause;
