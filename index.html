@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <script>
 
-var numFilesLoaded = 0;
-var people = new Object();
-var known_identifiers = new Array();
-var log_lines = new Array();
+var numFilesLoaded;
+var people;
+var known_identifiers;
+var log_lines;
+var transaction_matrix;
+var totalEverCredited;
 
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
     // need to always request a different URL to avoid getting a cached copy
     http.open( 'GET', url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(), true );
     http.onreadystatechange = function() {
-        if( http.readyState==4 && http.status==200 )
-        {
+        if( http.readyState==4 && http.status==200 ) {
             callback( http.responseText );
             checkAllLoaded();
         }
@@ -35,6 +37,12 @@ function storeNames( text ) {
         people[ initial ].credit = 0.0;
         known_identifiers.push( initial );
     }
+    for( var i = 0; i < known_identifiers.length; ++i ) {
+        transaction_matrix[i] = [];
+        for( var j = 0; j < known_identifiers.length; ++j ) {
+            transaction_matrix[i][j] = 0.0;
+        }
+    }
 }
 
 function storeLog( text ) {
@@ -43,18 +51,32 @@ function storeLog( text ) {
 
 function checkAllLoaded() {
     numFilesLoaded += 1;
-    if(numFilesLoaded == 2) {
+    if( numFilesLoaded == 2 ) {
         processData();
     }
 }
 
-function requestFreshData() {
+function clearData() {
     numFilesLoaded = 0;
     people = new Object();
     known_identifiers = new Array();
     log_lines = new Array();
-    getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
-    getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
+    transaction_matrix = [];
+    totalEverCredited = 0;
+}
+
+function requestFreshData() {
+    clearData();
+    if( true ) {
+        getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
+        getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
+    }
+    else {
+        // useful for local debugging
+        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  PFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BF36.60F     Ohayu Sushi" );
+        storeNames( "F:Fergal\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey\nH:Hannah" );
+        processData();
+    }
 }
 
 function parseLine( line ) {
@@ -78,20 +100,17 @@ function parseLine( line ) {
     var line_tokens = line.match( new RegExp( line_match ) );
     if( !line_tokens || line_tokens.length != 3 ) {
         comments.push( 'ERROR: Failed to parse this line at all.' );
-        return comments; // failed to parse this line
+        return comments;
     }
     var transaction = line_tokens[1];
     var description = line_tokens[2];
-    //comments.push( 'Transaction: ' + transaction );
     var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
     if( !transaction_tokens || transaction_tokens.length < 2 ) {
         comments.push( 'ERROR: Failed to parse this transaction.' );
-        return comments; // failed to parse the transaction
+        return comments;
     }
-    //comments.push( 'Transaction tokens: ' + transaction_tokens.join('  |  ') );
 
     var totalCredited = 0.0;
-    var amountInFixedDebits = 0;
     var weightedDebtors = new Object();
     var totalWeighting = 0.0;
     var fixedDebtors = new Object();
@@ -104,7 +123,7 @@ function parseLine( line ) {
             creditCurrency = creditor_subtokens[1];
             if( creditCurrency ) {
                 comments.push( 'ERROR: Cannot process foreign currency in this version!' );
-                return comments; // can't process foreign currency at the moment
+                return comments;
             }
             creditAmount = parseFloat( creditor_subtokens[2] );
             initial = creditor_subtokens[3];
@@ -117,40 +136,66 @@ function parseLine( line ) {
             percentage = parseFloat( debtor_subtokens[2] );
             debitAmount = parseFloat( debtor_subtokens[5] );
             if( debitAmount ) {
-                amountInFixedDebits += debitAmount;
                 fixedDebtors[ initial ] = debitAmount; // (don't debit yet in case currency is not ukp)
-                //comments.push( 'Will debit '+people[ initial ].full+' with '+debitAmount+' in this currency.' );
             }
             else if( percentage ) {
                 var weight = percentage / 100.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-                //comments.push( 'Will debit '+people[ initial ].full+' with '+percentage+'% of the divided share.' );
             }
             else {
                 var weight = 1.0;
                 totalWeighting += weight;
                 weightedDebtors[ initial ] = weight;
-                //comments.push( 'Will debit '+people[ initial ].full+' with divided share.' );
             }
         }
     }
-    var remainingDebt = totalCredited - amountInFixedDebits;
-    var unitDebt = remainingDebt / totalWeighting;
-    //comments.push( 'Total debt weighting = '+totalWeighting+' hence unit debt = '+unitDebt+'.' );
+    var remainingDebt = totalCredited;
     for( var initial in fixedDebtors ) {
         var debitAmount = fixedDebtors[ initial ];
         people[ initial ].credit -= debitAmount;
+        remainingDebt -= debitAmount;
         comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
     }
-    //comments.push( 'After fixed debits, there is '+remainingDebt+' ukp debt left in this transaction.' );
+    var unitDebt = remainingDebt / totalWeighting;
     for( var initial in weightedDebtors ) {
         var weight = weightedDebtors[ initial ];
         var debitAmount = unitDebt * weight;
         people[ initial ].credit -= debitAmount;
         comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
+    incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors );
     return comments;
+}
+
+function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors ) {
+    var people_involved = [];
+    for( var initial in fixedDebtors ) {
+        var iPerson = known_identifiers.indexOf( initial );
+        people_involved.push( iPerson );
+    }
+    for( var initial in weightedDebtors ) {
+        var iPerson = known_identifiers.indexOf( initial );
+        people_involved.push( iPerson );
+    }
+    for( var i in people_involved ) {
+        for( var j in people_involved ) {
+            if( j<=i ) { continue; }
+            transaction_matrix[i][j] += totalCredited;
+            transaction_matrix[j][i] += totalCredited;
+        }
+    }
+    totalEverCredited += totalCredited;
+}
+
+function computeFuturePredictions() {
+    var N = transaction_matrix.length;
+    // normalize the transactions matrix
+    for( var i = 0; i < N; ++i ) {
+        for( var j = 0; j < N; ++j ) {
+            transaction_matrix[i][j] /= totalEverCredited;
+        }
+    }
 }
 
 function printStatus() {
@@ -161,11 +206,17 @@ function printStatus() {
     }
     // TODO: sort to put lowest first, debts in red, pound symbol
     html += "</table>";
+    
+    html += "<h4>Transaction matrix:</h4><table border=\"1\">";
+    for( var row in transaction_matrix ) {
+        html += "<tr><td>"+transaction_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
+    }
+    html += "</table>";
     return html;
 }
 
 function processData() {
-    var log_html = "<table border=\"1\">";
+    var log_html = "<h4>Parsed transactions:</h4><table border=\"1\">";
     for( var i in log_lines ) {
         var line = log_lines[i];
         var comments = parseLine( line );
@@ -174,6 +225,7 @@ function processData() {
         }
     }
     log_html += "</table>";
+    computeFuturePredictions();
     document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
 }
