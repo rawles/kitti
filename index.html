@@ -8,8 +8,7 @@ var numFilesLoaded;
 var people;
 var known_identifiers;
 var log_lines;
-var transaction_matrix;
-var totalEverCredited;
+var transition_matrix;
 
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
@@ -38,9 +37,9 @@ function storeNames( text ) {
         known_identifiers.push( initial );
     }
     for( var i = 0; i < known_identifiers.length; ++i ) {
-        transaction_matrix[i] = [];
+        transition_matrix[i] = [];
         for( var j = 0; j < known_identifiers.length; ++j ) {
-            transaction_matrix[i][j] = 0.0;
+            transition_matrix[i][j] = 0.0;
         }
     }
 }
@@ -61,8 +60,7 @@ function clearData() {
     people = new Object();
     known_identifiers = new Array();
     log_lines = new Array();
-    transaction_matrix = [];
-    totalEverCredited = 0;
+    transition_matrix = [];
 }
 
 function requestFreshData() {
@@ -169,6 +167,8 @@ function parseLine( line ) {
 }
 
 function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors ) {
+    // each pair of people involved gets their connection strenthened by totalCredited
+    // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
     for( var initial in fixedDebtors ) {
         var iPerson = known_identifiers.indexOf( initial );
@@ -181,20 +181,28 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
     for( var i in people_involved ) {
         for( var j in people_involved ) {
             if( j<=i ) { continue; }
-            transaction_matrix[i][j] += totalCredited;
-            transaction_matrix[j][i] += totalCredited;
+            transition_matrix[i][j] += totalCredited;
+            transition_matrix[j][i] += totalCredited;
         }
     }
-    totalEverCredited += totalCredited;
 }
 
 function computeFuturePredictions() {
-    var N = transaction_matrix.length;
+    var N = transition_matrix.length;
     // normalize the transactions matrix
+    var edgeTotal = 0.0;
     for( var i = 0; i < N; ++i ) {
-        for( var j = 0; j < N; ++j ) {
-            transaction_matrix[i][j] /= totalEverCredited;
+        for( var j = i+1; j < N; ++j ) {
+            edgeTotal += transition_matrix[i][j];
         }
+    }
+    for( var i = 0; i < N; ++i ) {
+        var columnTotal = 0.0;
+        for( var j = 0; j < N; ++j ) {
+            transition_matrix[i][j] /= edgeTotal;
+            columnTotal += transition_matrix[i][j];
+        }
+        transition_matrix[i][i] = 1.0 - columnTotal;
     }
 }
 
@@ -207,9 +215,9 @@ function printStatus() {
     // TODO: sort to put lowest first, debts in red, pound symbol
     html += "</table>";
     
-    html += "<h4>Transaction matrix:</h4><table border=\"1\">";
-    for( var row in transaction_matrix ) {
-        html += "<tr><td>"+transaction_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
+    html += "<h4>Transition matrix:</h4><table border=\"1\">";
+    for( var row in transition_matrix ) {
+        html += "<tr><td>"+transition_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
     }
     html += "</table>";
     return html;
