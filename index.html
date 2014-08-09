@@ -236,6 +236,45 @@ function processData() {
     computeFuturePredictions();
     document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
+    drawThings()
+}
+
+function drawThings() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    // for now, draw people in a circle, with lines between them
+    var radius = ctx.canvas.width / 3;
+    var cx = ctx.canvas.width / 2;
+    var cy = ctx.canvas.height / 2;
+    var x = [];
+    var y = [];
+    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
+        var theta = iPerson * 2*Math.PI / known_identifiers.length;
+        x[iPerson] = cx + radius * Math.cos( theta );
+        y[iPerson] = cy + radius * Math.sin( theta );
+    }
+    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
+        
+        for( var jPerson = iPerson+1; jPerson < known_identifiers.length; ++jPerson ) {
+            var val = transition_matrix[iPerson][jPerson];
+            if( val > 0.0 ) {
+                ctx.strokeStyle = "rgba(200,200,200,100)";
+                ctx.lineWidth =  val * 10;
+                ctx.beginPath();
+                ctx.moveTo( x[iPerson], y[iPerson] );
+                ctx.lineTo( x[jPerson], y[jPerson] );
+                ctx.stroke();
+            }
+        }
+    }
+    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
+        ctx.fillStyle = "rgb(200,0,0)";
+        ctx.fillRect( x[iPerson]-6, y[iPerson]-6, 12, 12 );
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.font = "18px Arial";
+        ctx.fillText( people[ known_identifiers[ iPerson ] ].full, x[iPerson], y[iPerson] );
+    }
 }
 
 window.onload = requestFreshData;
@@ -254,7 +293,11 @@ instructions how to enable JavaScript in your web browser</a>.
 
 <div id="currentStatus">status</div>
 
+<canvas id="canvas" width="300" height="300">(Canvas drawing not supported by your browser.)</canvas>
+
 <div id="log">log</div>
+
+
 
     
 </body>
