@@ -167,7 +167,7 @@ function parseLine( line ) {
 }
 
 function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors ) {
-    // each pair of people involved gets their connection strenthened by totalCredited
+    // each pair of people involved gets their connection strengthened by totalCredited
     // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
     for( var identifier in fixedDebtors ) {
