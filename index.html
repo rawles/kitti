@@ -72,7 +72,7 @@ function requestFreshData() {
     else {
         // useful for local debugging
         storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  PFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BF36.60F     Ohayu Sushi" );
-        storeNames( "F:Fergal\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey\nH:Hannah" );
+        storeNames( "F:Fergal\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey" );
         processData();
     }
 }
@@ -167,7 +167,7 @@ function parseLine( line ) {
 }
 
 function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors ) {
-    // each pair of people involved gets their connection strenthened by totalCredited
+    // each pair of people involved gets their connection strengthened by totalCredited
     // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
     for( var initial in fixedDebtors ) {
