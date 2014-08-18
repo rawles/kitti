@@ -30,11 +30,11 @@ function storeNames( text ) {
         if( entries.length < 2 ) {
             continue;
         }
-        var initial = entries[0];
-        people[ initial ] = new Object();
-        people[ initial ].full = entries[1];
-        people[ initial ].credit = 0.0;
-        known_identifiers.push( initial );
+        var identifier = entries[0];
+        people[ identifier ] = new Object();
+        people[ identifier ].full = entries[1];
+        people[ identifier ].credit = 0.0;
+        known_identifiers.push( identifier );
     }
     for( var i = 0; i < known_identifiers.length; ++i ) {
         transition_matrix[i] = [];
@@ -71,8 +71,8 @@ function requestFreshData() {
     }
     else {
         // useful for local debugging
-        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  PFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BF36.60F     Ohayu Sushi" );
-        storeNames( "F:Fergal\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey\nH:Hannah" );
+        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  PFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BPaul36.60Paul     Imaginary Sushi" );
+        storeNames( "F:Fergal\nPaul:Paul\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey" );
         processData();
     }
 }
@@ -124,43 +124,43 @@ function parseLine( line ) {
                 return comments;
             }
             creditAmount = parseFloat( creditor_subtokens[2] );
-            initial = creditor_subtokens[3];
-            people[ initial ].credit += creditAmount;
+            identifier = creditor_subtokens[3];
+            people[ identifier ].credit += creditAmount;
             totalCredited += creditAmount;
-            comments.push( 'CREDIT: '+people[initial].full+' gets +'+creditAmount+' ukp.' );
+            comments.push( 'CREDIT: '+people[identifier].full+' gets +'+creditAmount+' ukp.' );
         }
         else if( debtor_subtokens ) {
-            initial = debtor_subtokens[1];
+            identifier = debtor_subtokens[1];
             percentage = parseFloat( debtor_subtokens[2] );
             debitAmount = parseFloat( debtor_subtokens[5] );
             if( debitAmount ) {
-                fixedDebtors[ initial ] = debitAmount; // (don't debit yet in case currency is not ukp)
+                fixedDebtors[ identifier ] = debitAmount; // (don't debit yet in case currency is not ukp)
             }
             else if( percentage ) {
                 var weight = percentage / 100.0;
                 totalWeighting += weight;
-                weightedDebtors[ initial ] = weight;
+                weightedDebtors[ identifier ] = weight;
             }
             else {
                 var weight = 1.0;
                 totalWeighting += weight;
-                weightedDebtors[ initial ] = weight;
+                weightedDebtors[ identifier ] = weight;
             }
         }
     }
     var remainingDebt = totalCredited;
-    for( var initial in fixedDebtors ) {
-        var debitAmount = fixedDebtors[ initial ];
-        people[ initial ].credit -= debitAmount;
+    for( var identifier in fixedDebtors ) {
+        var debitAmount = fixedDebtors[ identifier ];
+        people[ identifier ].credit -= debitAmount;
         remainingDebt -= debitAmount;
-        comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
+        comments.push( 'DEBIT: '+people[identifier].full+' gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
     }
     var unitDebt = remainingDebt / totalWeighting;
-    for( var initial in weightedDebtors ) {
-        var weight = weightedDebtors[ initial ];
+    for( var identifier in weightedDebtors ) {
+        var weight = weightedDebtors[ identifier ];
         var debitAmount = unitDebt * weight;
-        people[ initial ].credit -= debitAmount;
-        comments.push( 'DEBIT: '+people[initial].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
+        people[ identifier ].credit -= debitAmount;
+        comments.push( 'DEBIT: '+people[identifier].full+' gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
     incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors );
     return comments;
@@ -170,12 +170,12 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
     // each pair of people involved gets their connection strenthened by totalCredited
     // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
-    for( var initial in fixedDebtors ) {
-        var iPerson = known_identifiers.indexOf( initial );
+    for( var identifier in fixedDebtors ) {
+        var iPerson = known_identifiers.indexOf( identifier );
         people_involved.push( iPerson );
     }
-    for( var initial in weightedDebtors ) {
-        var iPerson = known_identifiers.indexOf( initial );
+    for( var identifier in weightedDebtors ) {
+        var iPerson = known_identifiers.indexOf( identifier );
         people_involved.push( iPerson );
     }
     for( var i in people_involved ) {
@@ -210,8 +210,8 @@ function computeFuturePredictions() {
 
 function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
-    for( var initial in people ) {
-        var person = people[ initial ];
+    for( var identifier in people ) {
+        var person = people[ identifier ];
         html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
     }
     // TODO: sort to put lowest first, debts in red, pound symbol
