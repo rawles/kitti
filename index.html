@@ -179,10 +179,12 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
         people_involved.push( iPerson );
     }
     for( var i in people_involved ) {
+        var pi = people_involved[ i ];
         for( var j in people_involved ) {
             if( j<=i ) { continue; }
-            transition_matrix[i][j] += totalCredited;
-            transition_matrix[j][i] += totalCredited;
+            var pj = people_involved[ j ];
+            transition_matrix[ pi ][ pj ] += totalCredited;
+            transition_matrix[ pj ][ pi ] += totalCredited;
         }
     }
 }
