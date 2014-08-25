@@ -132,9 +132,15 @@ function parseLine( line ) {
         else if( debtor_subtokens ) {
             identifier = debtor_subtokens[1];
             percentage = parseFloat( debtor_subtokens[2] );
-            debitAmount = parseFloat( debtor_subtokens[5] );
-            if( debitAmount ) {
-                fixedDebtors[ identifier ] = debitAmount; // (don't debit yet in case currency is not ukp)
+            debitAmount1 = parseFloat( debtor_subtokens[3] );
+            debitAmount2 = parseFloat( debtor_subtokens[5] );
+            if( debitAmount1 || debitAmount2 ) {
+                if( debitAmount1 ) {
+                    fixedDebtors[ identifier ] = debitAmount1; // (don't debit yet in case currency is not ukp)
+                }
+                else {
+                    fixedDebtors[ identifier ] = debitAmount2; // (don't debit yet in case currency is not ukp)
+                }
             }
             else if( percentage ) {
                 var weight = percentage / 100.0;
