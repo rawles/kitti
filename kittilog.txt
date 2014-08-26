@@ -11,3 +11,6 @@
 2014-08-23T21:00  T(70%)BMF125B   Rice Boat, Cambridge
 2014-08-24T16:00  FB4.40B         Tea, Southwold
 2014-08-24T16:00  TF4.40B         Tea and ice cream, Southwold
+2014-08-24T12:00  TFMB70M         Petrol for EMF and Southwold
+2014-08-24T14:00  T(70%)FMB70M    Lunch on the pier
+2014-08-24T18:00  T(70%)FMB50M    Dinner at the Old Nelson
