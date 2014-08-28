@@ -1,6 +1,8 @@
 F:Fergal
 B:Bear
-P:Pup
+J:Pup
 T:Turtle
 M:Monkey
-
+R:Rick
+P:Paul
+H:Hannah
