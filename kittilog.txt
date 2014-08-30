@@ -15,3 +15,4 @@
 2014-08-24T14:00  T(70%)FMB70M    Lunch on the pier
 2014-08-24T18:00  T(70%)FMB50M    Dinner at the Old Nelson
 2014-08-28T13:00  JB359.98B       Computers for EMF camp
+2014-08-30T18:30  MTBF20F1.5B     EMF pizza
