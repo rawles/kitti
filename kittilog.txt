@@ -17,3 +17,7 @@
 2014-08-28T13:00  JB359.98B       Computers for EMF camp
 2014-08-30T11:00. MTBF23.92F.     Asda shop
 2014-08-30T18:30  MTBF20F1.5B     EMF pizza
+2014-08-30T09:41  MTBF16.15B      Asda breakfast
+2014-08-30T10:04  TB(0.75)4.00B   Asda breakfast 2
+2014-08-31T19:30  BR8.80R         Cambridge Blue
+2014-08-31T21:30  BR35B           Curry King
