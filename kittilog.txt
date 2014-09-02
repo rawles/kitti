@@ -21,3 +21,7 @@
 2014-08-30T10:04  TB(0.75)4.00B   Asda breakfast 2
 2014-08-31T19:30  BR8.80R         Cambridge Blue
 2014-08-31T21:30  BR35B           Curry King
+2014-09-01T09:00  R15.65B         Portion of a group ticket from CBG to KGX
+2014-09-01T18:00  BR8B            Pub at KGX
+2014-09-01T20:15  BR4.40B         Bus to Tongs HQ
+2014-09-01T23:00  BR10R           Taxi from Tongs HQ
