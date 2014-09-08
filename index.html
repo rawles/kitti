@@ -10,6 +10,7 @@ var names;
 var known_identifiers;
 var log_lines;
 var transition_matrix;
+var total_transactions;
 
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
@@ -68,6 +69,7 @@ function clearData() {
     known_identifiers = new Array();
     log_lines = new Array();
     transition_matrix = [];
+    total_transactions = 0;
 }
 
 function requestFreshData() {
@@ -176,6 +178,7 @@ function parseLine( line ) {
         comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
     incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors );
+    total_transactions += totalCredited;
     return comments;
 }
 
@@ -194,6 +197,7 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
         for( var j in people_involved ) {
             if( j<=i ) { continue; }
             var pj = people_involved[ j ];
+            if( pi == pj ) { continue; } // not interested in self-transactions here
             transition_matrix[ pi ][ pj ] += totalCredited;
             transition_matrix[ pj ][ pi ] += totalCredited;
         }
@@ -225,10 +229,11 @@ function printStatus() {
         var person = people[ names[ i ] ];
         html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
     }
-    // TODO: sort to put lowest first, debts in red, pound symbol
     html += "</table>";
     
-    html += "<h4>Transition matrix:</h4><table border=\"1\">";
+    html += "<p>Total: "+total_transactions+" ukp, over "+log_lines.length+" transactions.</p>";
+    
+    html += "<hr><h4>Transition matrix:</h4><table border=\"1\">";
     for( var row in transition_matrix ) {
         html += "<tr><td>"+transition_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
     }
