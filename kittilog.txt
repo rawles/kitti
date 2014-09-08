@@ -26,3 +26,5 @@
 2014-09-01T20:15  BR4.40B         Bus to Tongs HQ
 2014-09-01T23:00  BR10R           Taxi from Tongs HQ
 2014-09-04T12:00  JB143.15J       SSD upgrade for the disposable computers
+2014-09-07T12:55  STBMF54.25F     Somers Town Coffee House lunch
+2014-09-07T14:27  FBT(2)M(3)21.40F M&S wine and olives
