@@ -388,11 +388,15 @@ function canvas_arrow(context, fromx, fromy, tox, toy){
     fromy += end_gap * Math.sin(angle);
     tox -= end_gap * Math.cos(angle);
     toy -= end_gap * Math.sin(angle);
+    context.beginPath();
     context.moveTo(fromx, fromy);
     context.lineTo(tox, toy);
-    context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
-    context.moveTo(tox, toy);
+    context.stroke();
+    context.beginPath();
+    context.moveTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+    context.lineTo(tox, toy);
     context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+    context.stroke();
 }
 
 function drawThings() {
@@ -418,9 +422,7 @@ function drawThings() {
             if( val > 0.0 ) {
                 ctx.strokeStyle = "rgba(0,0,0,0.2)";
                 ctx.lineWidth =  Math.log( val ) + 4;
-                ctx.beginPath();
                 canvas_arrow( ctx, x[iPerson], y[iPerson], x[jPerson], y[jPerson] );
-                ctx.stroke();
                 ctx.fillStyle = "rgba(0,0,0,0.9)";
                 ctx.font = "12px Arial";
                 ctx.fillText( String.fromCharCode(163)+val.toFixed(2), (x[iPerson]+x[jPerson])/2.0, (y[iPerson]+y[jPerson])/2.0 );
