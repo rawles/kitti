@@ -419,13 +419,13 @@ function drawThings() {
     for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
         for( var jPerson = 0; jPerson < names.length; ++jPerson ) {
             var val = flow_matrix[iPerson][jPerson];
-            if( val > 0.0 ) {
+            if( val > 1.0 ) {
                 ctx.strokeStyle = "rgb(200,200,200)";
-                ctx.lineWidth =  Math.log( val ) + 4;
+                ctx.lineWidth =  Math.log( val )*2.0 + 1;
                 canvas_arrow( ctx, x[iPerson], y[iPerson], x[jPerson], y[jPerson] );
                 ctx.fillStyle = "rgba(0,0,0,0.9)";
                 ctx.font = "12px Arial";
-                ctx.fillText( String.fromCharCode(163)+val.toFixed(2), (x[iPerson]+x[jPerson])/2.0, (y[iPerson]+y[jPerson])/2.0 );
+                ctx.fillText( String.fromCharCode(163)+val.toFixed(0), (x[iPerson]+x[jPerson])/2.0, (y[iPerson]+y[jPerson])/2.0 );
             }
         }
     }
