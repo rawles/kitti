@@ -420,7 +420,7 @@ function drawThings() {
         for( var jPerson = 0; jPerson < names.length; ++jPerson ) {
             var val = flow_matrix[iPerson][jPerson];
             if( val > 0.0 ) {
-                ctx.strokeStyle = "rgba(0,0,0,0.2)";
+                ctx.strokeStyle = "rgb(200,200,200)";
                 ctx.lineWidth =  Math.log( val ) + 4;
                 canvas_arrow( ctx, x[iPerson], y[iPerson], x[jPerson], y[jPerson] );
                 ctx.fillStyle = "rgba(0,0,0,0.9)";
