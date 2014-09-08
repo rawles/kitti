@@ -75,6 +75,6 @@ for i = 1:10000
     e = e + diag(v)*tm;
     v = v * tm;
 end
-e = e - e' % gives the net flow along each edge (rows = from, columns = to )
+e = e' - e % gives the net flow along each edge (rows = from, columns = to )
 
 
