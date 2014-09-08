@@ -4,6 +4,107 @@
 <meta charset="utf-8">
 <script>
 
+// ------------- maths functions (should probably move to another file) --------------------------------
+
+function matrix_zeros( N ) {
+    // initialize an NxN matrix of zeros
+    var out = [];
+    for( var i = 0; i < N; ++i ) {
+        out[i] = [];
+        for( var j = 0; j < N; ++j ) {
+            out[i][j] = 0.0;
+        }
+    }
+    return out;
+}
+
+function matrix_times( a, b ) {
+    // multiply two matrices together
+    Ra = a.length;
+    Ca = a[0].length;
+    Rb = b.length; // assume Ca==Rb
+    Cb = b[0].length;
+    var out = [];
+    for( var r = 0; r < Ra; ++r ) {
+        out[r] = [];
+        for( var c = 0; c < Cb; ++c ) {
+            out[r][c] = 0.0;
+            for( var i = 0; i < Ca; ++i ) {
+                out[r][c] += a[r][i] * b[i][c];
+            }
+        }
+    }
+    return out;
+}
+
+function matrix_add( a, b ) {
+    // a+b
+    R = a.length;
+    C = a[0].length; // assume rectangular and same size
+    var out = [];
+    for( var r = 0; r < R; ++r ) {
+        out[r] = [];
+        for( var c = 0; c < C; ++c ) {
+            out[r][c] = a[r][c] + b[r][c];
+        }
+    }
+    return out;
+}
+
+function matrix_times_scalar( a, b ) {
+    // multiply matrix a by scalar b
+    R = a.length;
+    C = a[0].length; // assume rectangular
+    var out = [];
+    for( var r = 0; r < R; ++r ) {
+        out[r] = [];
+        for( var c = 0; c < C; ++c ) {
+            out[r][c] = a[r][c] * b;
+        }
+    }
+    return out;
+}
+
+function matrix_sum( a ) {
+    // columnwise sum of matrix
+    R = a.length;
+    C = a[0].length; // assume rectangular
+    var out = [];
+    for( var c = 0; c < C; ++c ) {
+        out[c] = 0.0;
+        for( var r = 0; r < R; ++r ) {
+            out[c] += a[r][c];
+        }
+    }
+    return out;
+}
+
+function matrix_diag( a ) {
+    // turn vector into a diagonal matrix
+    N = a.length;
+    var out = matrix_zeros( N );
+    for( var i = 0; i < N; ++i ) {
+        out[i][i] = a[i];
+    }
+    return out;
+}
+
+function matrix_transpose( a ) {
+    // transpose matrix
+    R = a.length;
+    C = a[0].length; // assume rectangular
+    var out = [];
+    for( var c = 0; c < C; ++c ) {
+        out[c] = [];
+        for( var r = 0; r < R; ++r ) {
+            out[c][r] = a[r][c];
+        }
+    }
+    return out;
+}
+
+// ------------------------------------------------------------------------------------
+
 var numFilesLoaded;
 var people;
 var names;
@@ -43,12 +144,7 @@ function storeNames( text ) {
             known_identifiers.push( entries[ j ] );
         }
     }
-    for( var i = 0; i < names.length; ++i ) {
-        transition_matrix[i] = [];
-        for( var j = 0; j < names.length; ++j ) {
-            transition_matrix[i][j] = 0.0;
-        }
-    }
+    transition_matrix = matrix_zeros( names.length );
 }
 
 function storeLog( text ) {
@@ -204,7 +300,7 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
     }
 }
 
-function computeFuturePredictions() {
+function computeTransitionMatrix() {
     var N = transition_matrix.length;
     // normalize the transactions matrix
     var edgeTotal = 0.0;
@@ -223,6 +319,23 @@ function computeFuturePredictions() {
     }
 }
 
+function computeRepaymentMatrix() {
+    // given N people's credit/debit value and the transition matrix, what are the debt flows needed to cancel everything out?
+    var N = transition_matrix.length;
+    var e = matrix_zeros( N );
+    v = [];
+    for( var i in names ) {
+        v[ i ] = people[ names[ i ] ].credit;
+    }
+    for( var it = 0; it < 10000; ++it ) {
+        vm = matrix_times( matrix_diag( v ), transition_matrix );
+        e = matrix_add( e, vm );
+        v = matrix_sum( vm );
+    }
+    e = matrix_add( e, matrix_times_scalar( matrix_transpose( e ), -1.0 ) );
+    repayments_matrix = matrix_times_scalar( e, -1.0 );
+}
+
 function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
     for( var i in names ) {
@@ -231,13 +344,28 @@ function printStatus() {
     }
     html += "</table>";
     
-    html += "<p>Total: "+total_transactions+" ukp, over "+log_lines.length+" transactions.</p>";
+    html += "<p>Total: "+total_transactions.toFixed(2)+" ukp, over "+log_lines.length+" transactions.</p>";
     
-    html += "<hr><h4>Transition matrix:</h4><table border=\"1\">";
+    html += "<hr><h4>Repayments matrix:</h4>";
+    html += "<p>(an idealised set of payments, assuming the transactions are along historical lines)</p>";
+    html += "<table border=\"1\"><tr><td></td>";
+    for( var row in repayments_matrix ) {
+        html += "<td>to "+names[row]+"</td>";
+    }
+    html += "</tr>";
+    for( var row in repayments_matrix ) {
+        html += "<tr><td> from "+names[row]+"</td><td>"+repayments_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
+    }
+    html += "</table>";
+
+    html += "<hr><h4>Transition matrix:</h4>";
+    html += "<p>(shows how much money has flowed between people, historically)</p>";
+    html += "<table border=\"1\">";
     for( var row in transition_matrix ) {
         html += "<tr><td>"+transition_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
     }
     html += "</table>";
+
     return html;
 }
 
@@ -251,7 +379,8 @@ function processData() {
         }
     }
     log_html += "</table>";
-    computeFuturePredictions();
+    computeTransitionMatrix();
+    computeRepaymentMatrix();
     document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
     drawThings()
