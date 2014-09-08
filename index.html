@@ -105,14 +105,6 @@ function matrix_transpose( a ) {
 
 // ------------------------------------------------------------------------------------
 
-var numFilesLoaded;
-var people;
-var names;
-var known_identifiers;
-var log_lines;
-var transition_matrix;
-var total_transactions;
-
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
     // need to always request a different URL to avoid getting a cached copy
@@ -164,7 +156,6 @@ function clearData() {
     names = new Array();
     known_identifiers = new Array();
     log_lines = new Array();
-    transition_matrix = [];
     total_transactions = 0;
 }
 
@@ -309,18 +300,18 @@ function computeTransitionMatrix() {
             edgeTotal += transition_matrix[i][j];
         }
     }
+    transition_matrix = matrix_times_scalar( transition_matrix, 1.0 / edgeTotal );
+    // fill the diagonal with the remaining 'stay-here' probability
+    column_totals = matrix_sum( transition_matrix );
     for( var i = 0; i < N; ++i ) {
-        var columnTotal = 0.0;
-        for( var j = 0; j < N; ++j ) {
-            transition_matrix[i][j] /= edgeTotal;
-            columnTotal += transition_matrix[i][j];
-        }
-        transition_matrix[i][i] = 1.0 - columnTotal;
+        transition_matrix[i][i] = 1.0 - column_totals[i];
     }
 }
 
-function computeRepaymentMatrix() {
-    // given N people's credit/debit value and the transition matrix, what are the debt flows needed to cancel everything out?
+function computeFlowMatrix() {
+    // given N people's credit/debit value and the assumption that the flow of credit will
+    // be as seen in the historical record, what are the debt flows that will happen to 
+    // cancel everything out?
     var N = transition_matrix.length;
     var e = matrix_zeros( N );
     v = [];
@@ -333,7 +324,7 @@ function computeRepaymentMatrix() {
         v = matrix_sum( vm );
     }
     e = matrix_add( e, matrix_times_scalar( matrix_transpose( e ), -1.0 ) );
-    repayments_matrix = matrix_times_scalar( e, -1.0 );
+    flow_matrix = matrix_times_scalar( e, -1.0 );
 }
 
 function printStatus() {
@@ -346,20 +337,20 @@ function printStatus() {
     
     html += "<p>Total: "+total_transactions.toFixed(2)+" ukp, over "+log_lines.length+" transactions.</p>";
     
-    html += "<hr><h4>Repayments matrix:</h4>";
-    html += "<p>(an idealised set of payments, assuming the transactions are along historical lines)</p>";
+    html += "<hr><h4>Flow matrix:</h4>";
+    html += "<p>(how the debt will clear, if the transactions are along historical lines)</p>";
     html += "<table border=\"1\"><tr><td></td>";
-    for( var row in repayments_matrix ) {
+    for( var row in flow_matrix ) {
         html += "<td>to "+names[row]+"</td>";
     }
     html += "</tr>";
-    for( var row in repayments_matrix ) {
-        html += "<tr><td> from "+names[row]+"</td><td>"+repayments_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
+    for( var row in flow_matrix ) {
+        html += "<tr><td> from "+names[row]+"</td><td>"+flow_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
     }
     html += "</table>";
 
     html += "<hr><h4>Transition matrix:</h4>";
-    html += "<p>(shows how much money has flowed between people, historically)</p>";
+    html += "<p>(shows how much money has flowed between people, on average)</p>";
     html += "<table border=\"1\">";
     for( var row in transition_matrix ) {
         html += "<tr><td>"+transition_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
@@ -380,7 +371,7 @@ function processData() {
     }
     log_html += "</table>";
     computeTransitionMatrix();
-    computeRepaymentMatrix();
+    computeFlowMatrix();
     document.getElementById("currentStatus").innerHTML = printStatus();
     document.getElementById("log").innerHTML = log_html;
     drawThings()
@@ -402,7 +393,6 @@ function drawThings() {
         y[iPerson] = cy + radius * Math.sin( theta );
     }
     for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
-        
         for( var jPerson = iPerson+1; jPerson < names.length; ++jPerson ) {
             var val = transition_matrix[iPerson][jPerson];
             if( val > 0.0 ) {
@@ -452,9 +442,6 @@ instructions how to enable JavaScript in your web browser</a>.
 <canvas id="canvas" width="300" height="300">(Canvas drawing not supported by your browser.)</canvas>
 
 <div id="log">log</div>
-
-
-
     
 </body>
 </html>
