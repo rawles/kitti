@@ -6,7 +6,7 @@ a(1,2)=0.3;
 a(1,3)=0.3;
 a(2,3)=0.3;
 a(3,4)=0.1;
-dt = 1.0;  % size of timestep
+dt = 1.0;  % size of timestep (a proportion of the total amount of money in the system, which is 20ukp)
 a = dt * a / sum( a(:) ); % normalize to sum to dt for small transaction steps
 a = max( a, a' ); % (make symmetrical)
 
@@ -65,5 +65,16 @@ ylabel( 'credit in the system (ukp)' );
 xlabel( 'time' );
 xlim( [ min(dt*steps), max(dt*steps) ] );
 title( sprintf( 'robot club / swimming scenario starting from %s', mat2str( v0 ) ) );
-disp('Press any key to continue');
-pause;
+
+% -----------------------------------------------------------
+% given a transition matrix and a starting point, how much money must flow along each edge
+% before the debts are all cancelled out?
+v = v0;
+e = zeros(4);
+for i = 1:10000
+    e = e + diag(v)*tm;
+    v = v * tm;
+end
+e = e - e' % gives the net flow along each edge (rows = from, columns = to )
+
+
