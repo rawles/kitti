@@ -6,6 +6,7 @@
 
 var numFilesLoaded;
 var people;
+var names;
 var known_identifiers;
 var log_lines;
 var transition_matrix;
@@ -26,19 +27,21 @@ function getAsync( url, callback ) {
 function storeNames( text ) {
     name_lines = text.split("\n");
     for( var i = 0; i < name_lines.length; ++i ) {
-        entries = name_lines[i].split(':');
-        if( entries.length < 2 ) {
-            continue;
+        entries = name_lines[i].split(/[:,]/);
+        var full_name = entries[0];
+        people[ full_name ] = new Object();
+        people[ full_name ].full = full_name;
+        people[ full_name ].credit = 0.0;
+        people[ full_name ].index = i;
+        names.push( full_name );
+        for( var j = 1; j < entries.length; ++j ) {
+            people[ entries[ j ] ] = people[ full_name ];
+            known_identifiers.push( entries[ j ] );
         }
-        var identifier = entries[0];
-        people[ identifier ] = new Object();
-        people[ identifier ].full = entries[1];
-        people[ identifier ].credit = 0.0;
-        known_identifiers.push( identifier );
     }
-    for( var i = 0; i < known_identifiers.length; ++i ) {
+    for( var i = 0; i < names.length; ++i ) {
         transition_matrix[i] = [];
-        for( var j = 0; j < known_identifiers.length; ++j ) {
+        for( var j = 0; j < names.length; ++j ) {
             transition_matrix[i][j] = 0.0;
         }
     }
@@ -58,6 +61,7 @@ function checkAllLoaded() {
 function clearData() {
     numFilesLoaded = 0;
     people = new Object();
+    names = new Array();
     known_identifiers = new Array();
     log_lines = new Array();
     transition_matrix = [];
@@ -71,8 +75,8 @@ function requestFreshData() {
     }
     else {
         // useful for local debugging
-        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  PFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BPaul36.60Paul     Imaginary Sushi" );
-        storeNames( "F:Fergal\nPaul:Paul\nB:Bear\nP:Pup\nT:Turtle\nM:Monkey" );
+        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  JFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BP36.60P     Imaginary Sushi" );
+        storeNames( "FrkiMnkiTurtle:F,M,T\nRickPaul:R,P\nBear:B\nPup:J" );
         processData();
     }
 }
@@ -104,7 +108,7 @@ function parseLine( line ) {
     var description = line_tokens[2];
     var transaction_tokens = transaction.match( new RegExp( transaction_match, "gi" ) );
     if( !transaction_tokens || transaction_tokens.length < 2 ) {
-        comments.push( 'ERROR: Failed to parse this transaction.' );
+        comments.push( 'ERROR: Failed to parse this transaction: '+transaction+' using regexp: '+transaction_match );
         return comments;
     }
 
@@ -177,12 +181,10 @@ function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtor
     // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
     for( var identifier in fixedDebtors ) {
-        var iPerson = known_identifiers.indexOf( identifier );
-        people_involved.push( iPerson );
+        people_involved.push( people[ identifier ].index );
     }
     for( var identifier in weightedDebtors ) {
-        var iPerson = known_identifiers.indexOf( identifier );
-        people_involved.push( iPerson );
+        people_involved.push( people[ identifier ].index );
     }
     for( var i in people_involved ) {
         var pi = people_involved[ i ];
@@ -216,8 +218,8 @@ function computeFuturePredictions() {
 
 function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
-    for( var identifier in people ) {
-        var person = people[ identifier ];
+    for( var i in names ) {
+        var person = people[ names[ i ] ];
         html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
     }
     // TODO: sort to put lowest first, debts in red, pound symbol
@@ -257,14 +259,14 @@ function drawThings() {
     var cy = ctx.canvas.height / 2;
     var x = [];
     var y = [];
-    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
-        var theta = iPerson * 2*Math.PI / known_identifiers.length;
+    for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
+        var theta = iPerson * 2*Math.PI / names.length;
         x[iPerson] = cx + radius * Math.cos( theta );
         y[iPerson] = cy + radius * Math.sin( theta );
     }
-    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
+    for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
         
-        for( var jPerson = iPerson+1; jPerson < known_identifiers.length; ++jPerson ) {
+        for( var jPerson = iPerson+1; jPerson < names.length; ++jPerson ) {
             var val = transition_matrix[iPerson][jPerson];
             if( val > 0.0 ) {
                 ctx.strokeStyle = "rgba(200,200,200,100)";
@@ -276,12 +278,12 @@ function drawThings() {
             }
         }
     }
-    for( var iPerson = 0; iPerson < known_identifiers.length; ++iPerson ) {
+    for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
         ctx.fillStyle = "rgb(200,0,0)";
         ctx.fillRect( x[iPerson]-6, y[iPerson]-6, 12, 12 );
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.font = "18px Arial";
-        ctx.fillText( people[ known_identifiers[ iPerson ] ].full, x[iPerson], y[iPerson] );
+        ctx.fillText( people[ names[ iPerson ] ].full, x[iPerson], y[iPerson] );
     }
 }
 

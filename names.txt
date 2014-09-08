@@ -1,9 +1,6 @@
-F:Fergal
-B:Bear
-J:Pup
-T:Turtle
-M:Monkey
-R:Rick
-P:Paul
-H:Hannah
-S:Spimcoot
+FrkiMnkiTurtle:F,M,T
+Bear:B
+Pup:J
+RickPaul:R,P
+Hannah:H
+Spimcoot:S
