@@ -331,10 +331,11 @@ function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
     for( var i in names ) {
         var person = people[ names[ i ] ];
-        html += "<tr><td>" + person.full + "</td><td>" + person.credit.toFixed(2) + "</td></tr>";
+        html += "<tr><td>" + person.full + "</td><td>" + String.fromCharCode(163) + person.credit.toFixed(2) + "</td></tr>";
     }
     html += "</table>";
     
+    /*
     html += "<p>Total: "+total_transactions.toFixed(2)+" ukp, over "+log_lines.length+" transactions.</p>";
     
     html += "<hr><h4>Flow matrix:</h4>";
@@ -356,6 +357,7 @@ function printStatus() {
         html += "<tr><td>"+transition_matrix[row].map(function(x){ return x.toFixed(2); }).join("</td><td>") + "</td></tr>";
     }
     html += "</table>";
+    */
 
     return html;
 }
@@ -377,9 +379,27 @@ function processData() {
     drawThings()
 }
 
+// adapted from http://stackoverflow.com/a/6333775/126823
+function canvas_arrow(context, fromx, fromy, tox, toy){
+    var headlen = 10; // length of head in pixels
+    var end_gap = 20; // distance of head and tail from requested positions
+    var angle = Math.atan2(toy-fromy,tox-fromx);
+    fromx += end_gap * Math.cos(angle);
+    fromy += end_gap * Math.sin(angle);
+    tox -= end_gap * Math.cos(angle);
+    toy -= end_gap * Math.sin(angle);
+    context.moveTo(fromx, fromy);
+    context.lineTo(tox, toy);
+    context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+    context.moveTo(tox, toy);
+    context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+}
+
 function drawThings() {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textAlign = "center";
 
     // for now, draw people in a circle, with lines between them
     var radius = ctx.canvas.width / 3;
@@ -393,24 +413,35 @@ function drawThings() {
         y[iPerson] = cy + radius * Math.sin( theta );
     }
     for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
-        for( var jPerson = iPerson+1; jPerson < names.length; ++jPerson ) {
-            var val = transition_matrix[iPerson][jPerson];
+        for( var jPerson = 0; jPerson < names.length; ++jPerson ) {
+            var val = flow_matrix[iPerson][jPerson];
             if( val > 0.0 ) {
-                ctx.strokeStyle = "rgba(200,200,200,100)";
-                ctx.lineWidth =  val * 10;
+                ctx.strokeStyle = "rgba(0,0,0,0.2)";
+                ctx.lineWidth =  Math.log( val ) + 4;
                 ctx.beginPath();
-                ctx.moveTo( x[iPerson], y[iPerson] );
-                ctx.lineTo( x[jPerson], y[jPerson] );
+                canvas_arrow( ctx, x[iPerson], y[iPerson], x[jPerson], y[jPerson] );
                 ctx.stroke();
+                ctx.fillStyle = "rgba(0,0,0,0.9)";
+                ctx.font = "12px Arial";
+                ctx.fillText( String.fromCharCode(163)+val.toFixed(2), (x[iPerson]+x[jPerson])/2.0, (y[iPerson]+y[jPerson])/2.0 );
             }
         }
     }
+    var blobR = 10;
     for( var iPerson = 0; iPerson < names.length; ++iPerson ) {
-        ctx.fillStyle = "rgb(200,0,0)";
-        ctx.fillRect( x[iPerson]-6, y[iPerson]-6, 12, 12 );
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.font = "18px Arial";
-        ctx.fillText( people[ names[ iPerson ] ].full, x[iPerson], y[iPerson] );
+        var credit = people[ names[ iPerson ] ].credit;
+        if( credit > 0 ) {
+            ctx.fillStyle = "rgba(0,200,0,0.4)"; 
+        }
+        else {
+            ctx.fillStyle = "rgba(200,0,0,0.4)"; 
+        }
+        ctx.beginPath();
+        ctx.arc(x[iPerson],y[iPerson],blobR,0,2*Math.PI);
+        ctx.fill();
+        ctx.fillStyle = "rgba(0,0,0,1.0)";
+        ctx.font = "14px Arial";
+        ctx.fillText( people[ names[ iPerson ] ].full, x[iPerson], y[iPerson]-blobR-10 );
     }
 }
 
@@ -428,6 +459,10 @@ instructions how to enable JavaScript in your web browser</a>.
 </head>
 <body>
 
+<div id="currentStatus">status</div>
+
+<p align="center"><canvas id="canvas" width="500" height="500">(Canvas drawing not supported by your browser.)</canvas></p>
+
 <form target="_blank" method="post" action="mailto:ferkel@gmail.com" enctype="text/plain">
   New transaction:
   <input type=text name=kitti_transaction>
@@ -436,10 +471,6 @@ instructions how to enable JavaScript in your web browser</a>.
 </form>
 
 <hr>
-
-<div id="currentStatus">status</div>
-
-<canvas id="canvas" width="300" height="300">(Canvas drawing not supported by your browser.)</canvas>
 
 <div id="log">log</div>
     
