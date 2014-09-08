@@ -6,3 +6,4 @@ M:Monkey
 R:Rick
 P:Paul
 H:Hannah
+S:Spimcoot
