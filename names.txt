@@ -3,4 +3,4 @@ Bear:B
 Pup:J
 RickPaul:R,P
 Hannah:H
-Spimcoot:S
+spimcoot:S
