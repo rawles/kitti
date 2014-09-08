@@ -404,6 +404,7 @@ function drawThings() {
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = "center";
+    ctx.textBaseline = 'middle';
 
     // for now, draw people in a circle, with lines between them
     var radius = ctx.canvas.width / 3;
@@ -443,7 +444,7 @@ function drawThings() {
         ctx.fill();
         ctx.fillStyle = "rgba(0,0,0,1.0)";
         ctx.font = "14px Arial";
-        ctx.fillText( people[ names[ iPerson ] ].full, x[iPerson], y[iPerson]-blobR-10 );
+        ctx.fillText( people[ names[ iPerson ] ].full, x[iPerson], y[iPerson]-blobR*3 );
     }
 }
 
