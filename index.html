@@ -327,6 +327,7 @@ function computeFlowMatrix() {
     // cancel everything out?
     var N = transition_matrix.length;
     var e = matrix_zeros( N );
+    clearing_cost = 0.0;
     v = [];
     for( var i in names ) {
         v[ i ] = people[ names[ i ] ].credit;
@@ -335,7 +336,11 @@ function computeFlowMatrix() {
         vm = matrix_times( matrix_diag( v ), transition_matrix );
         e = matrix_add( e, vm );
         v = matrix_sum( vm );
+        for( var i in v ) {
+            clearing_cost += Math.abs( v[i] );
+        }
     }
+    clearing_cost /= total_transactions / log_lines.length; // convert pound-transactions into transactions
     e = matrix_add( e, matrix_times_scalar( matrix_transpose( e ), -1.0 ) );
     flow_matrix = matrix_times_scalar( e, -1.0 );
 }
@@ -347,6 +352,8 @@ function printStatus() {
         html += "<tr><td>" + person.full + "</td><td>" + String.fromCharCode(163) + person.credit.toFixed(2) + "</td></tr>";
     }
     html += "</table>";
+    
+    html += "<p>Expected transactions for debt to clear naturally: "+clearing_cost.toFixed(2)+"</p>";
     
     /*
     html += "<p>Total: "+total_transactions.toFixed(2)+" ukp, over "+log_lines.length+" transactions.</p>";
