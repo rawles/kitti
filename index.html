@@ -119,6 +119,7 @@ function getAsync( url, callback ) {
 }
 
 function storeNames( text ) {
+    document.getElementById("input_names").value = text;
     name_lines = text.split("\n");
     person_index = 0;
     for( var i = 0; i < name_lines.length; ++i ) {
@@ -140,6 +141,7 @@ function storeNames( text ) {
 }
 
 function storeLog( text ) {
+    document.getElementById("input_transactions").value = text;
     log_lines = text.split("\n");
 }
 
@@ -208,6 +210,7 @@ function parseLine( line ) {
     var weightedDebtors = new Object();
     var totalWeighting = 0.0;
     var fixedDebtors = new Object();
+    var creditors = [];
     for( var j in transaction_tokens ) {
         var token = transaction_tokens[j];
         var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
@@ -223,6 +226,7 @@ function parseLine( line ) {
             identifier = creditor_subtokens[3];
             people[ identifier ].credit += creditAmount;
             totalCredited += creditAmount;
+            creditors.push( identifier );
             comments.push( 'CREDIT: '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+' ukp.' );
         }
         else if( debtor_subtokens ) {
@@ -264,20 +268,29 @@ function parseLine( line ) {
         people[ identifier ].credit -= debitAmount;
         comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
     }
-    incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors );
+    incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors );
     total_transactions += totalCredited;
     return comments;
 }
 
-function incrementTransactionMatrix( totalCredited, fixedDebtors, weightedDebtors ) {
+function incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors ) {
     // each pair of people involved gets their connection strengthened by totalCredited
     // (could consider weightings, fixed amounts, people who paid for their share)
     var people_involved = [];
+    for( var identifier in creditors ) {
+        iPerson = people[ creditors[ identifier ] ].index;
+        if( people_involved.indexOf( iPerson ) == -1 )
+            people_involved.push( iPerson );
+    }
     for( var identifier in fixedDebtors ) {
-        people_involved.push( people[ identifier ].index );
+        iPerson = people[ identifier ].index;
+        if( people_involved.indexOf( iPerson ) == -1 )
+            people_involved.push( iPerson );
     }
     for( var identifier in weightedDebtors ) {
-        people_involved.push( people[ identifier ].index );
+        iPerson = people[ identifier ].index;
+        if( people_involved.indexOf( iPerson ) == -1 )
+            people_involved.push( iPerson );
     }
     for( var i in people_involved ) {
         var pi = people_involved[ i ];
@@ -448,8 +461,14 @@ function drawThings() {
     }
 }
 
+function parse_input() {
+    clearData();
+    storeLog( document.getElementById("input_transactions").value );
+    storeNames( document.getElementById("input_names").value );
+    processData();
+}
+
 window.onload = requestFreshData;
-setInterval( requestFreshData, 10000 ); // update data every 10s
 
 </script>
 
@@ -472,6 +491,13 @@ instructions how to enable JavaScript in your web browser</a>.
   <input type=submit value="Submit">
   (will attempt to email ferkel@gmail.com)
 </form>
+
+<p>Test area:</p>
+<p>
+  <textarea id="input_transactions" cols="100" rows="20" style="vertical-align:top"></textarea>
+  <textarea id="input_names" cols="20" rows="20" style="vertical-align:top"></textarea>
+  <input type="button" value="Parse" onclick="parse_input();" style="vertical-align:top">
+</p>
 
 <hr>
 
