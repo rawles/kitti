@@ -349,15 +349,15 @@ function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
     for( var i in names ) {
         var person = people[ names[ i ] ];
-        html += "<tr><td>" + person.full + "</td><td>" + String.fromCharCode(163) + person.credit.toFixed(2) + "</td></tr>";
+        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td align=\"right\">"+person.credit.toFixed(2)+"</td></tr>";
     }
     html += "</table>";
     
-    html += "<p>Expected transactions for debt to clear naturally: "+clearing_cost.toFixed(2)+"</p>";
+    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions.</p>";
+    
+    html += "<p>Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(2)+"</p>";
     
     /*
-    html += "<p>Total: "+total_transactions.toFixed(2)+" ukp, over "+log_lines.length+" transactions.</p>";
-    
     html += "<hr><h4>Flow matrix:</h4>";
     html += "<p>(how the debt will clear, if the transactions are along historical lines)</p>";
     html += "<table border=\"1\"><tr><td></td>";
