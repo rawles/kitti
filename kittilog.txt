@@ -4,7 +4,7 @@
 2014-07-31T22:00  BF36.60F        Ohayu Sushi
 2014-08-09T19:34  BJ27.17B3B      Cherry Box Pizza (Forehead film)
 2014-08-17T15:30  B20F            Chairs 
-2014-08-17T18:45  BT21.66B       Minecraft Realm (shared among the users)
+2014-08-17T18:45  BT21.66B        Minecraft Realm (shared among the users)
 2014-08-18T14:06  MTB14.79B       Subway (everyone had about the same)
 2014-08-18T14:15  T(200%)BM7.90B  Cambridge Blue (T had a pudding, M+B had coffees)
 2014-08-22T09:22  T(2.20)MB10.80B Parkside Pool
@@ -31,8 +31,8 @@
 2014-09-07T09:13  BFMT(2)33.65B   Train to London
 2014-09-07T14:00  B10M2F          Lending money for ice cream and magnets at Klezmer
 2014-09-07T14:00  S5B             Lending money for deckchairs at Klezmer
-2014-09-07T18:00  BMTFS10S         Taxi fare to KGX
+2014-09-07T18:00  BMTFS10S        Taxi fare to KGX
 2014-09-07T13:00  BSF12B          Drinks at Somers Town Coffee House (QUESTION: do we count rounds of beer?)
 2014-09-07T18:30  B(3.76)T7.42B   Snacks for the train from Little Waitrose
 2014-09-14T14:30  BJ82.40J        We accidentally a lot of monay on kayaking
-2014-09-28T13:00  MBTF60.42M      Red Lion lunch
+2014-09-28T13:00  MBTF60.42M      Rose pub lunch (rated 1)
