@@ -37,3 +37,14 @@
 2014-09-14T14:30  BJ82.40J        We accidentally a lot of monay on kayaking
 2014-09-28T13:00  MBTF60.42M      Rose pub lunch (rated 1)
 2014-10-18T18:00  K(9.99)B21.50B  Rainbow Cafe
+2014-10-19T18:00  B9.99K          Tim zeroes his Kitti balance
+2014-10-24T13:00  RPB42P          Rainbow Cafe
+2014-10-24T18:00  RPB23P          Taxi
+2014-10-24T23:00  RPB18P          Taxi
+2014-10-24T19:00  RPB261.36P      Hole in the Wall
+2014-10-23T18:00  RPB50.10B       Cocum delivery
+2014-10-25T13:00  RPB30B          Fish and chips at the Geldart
+2014-11-15T13:00  FBMT(21.50)93M  Zoo visit
+2014-11-15T16:00  FBM10M          CD-ROM of zoo visit picture
+2014-11-15T16:21  FBMT(70%)66.50M Meal at the Dog and Duck, Linton
+2014-11-23T13:00  FBMT(70%)110B   Meal at Zizzi
