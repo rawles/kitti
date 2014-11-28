@@ -43,6 +43,7 @@
 2014-10-24T19:00  RPB261.36P      Hole in the Wall
 2014-10-23T18:00  RPB50.10B       Cocum delivery
 2014-10-25T13:00  RPB30B          Fish and chips at the Geldart
+2014-11-14T13:00  BF7.80F         MSR lunch
 2014-11-15T13:00  FBMT(21.50)93M  Zoo visit
 2014-11-15T16:00  FBM10M          CD-ROM of zoo visit picture
 2014-11-15T16:21  FBMT(70%)66.50M Meal at the Dog and Duck, Linton
