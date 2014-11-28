@@ -49,3 +49,4 @@
 2014-11-23T13:00  FBMT(70%)110B   Meal at Zizzi
 2014-11-26T20:00  BM28B           Meal at Bibimbap
 2014-11-26T21:30  BM7B            Mulled wine at CB1
+2014-11-28T13:00  BMF12.42F       MSR lunch
