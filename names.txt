@@ -3,5 +3,6 @@ Bear:B
 Pup:J
 RickPaul:R,P
 spimcoot:S
+Clara:C
 Tim:K
 Ralf:D
