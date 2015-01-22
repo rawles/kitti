@@ -1,31 +1,31 @@
-2014-07-25T13:30  FB20F15B        Bedouin lunch
-2014-07-29T21:10  JFB16.48B2F     Cherry Box Pizza on film night
-2014-07-31T20:30  BF8F            Cambridge Blue (Benediktiner Weissbier)
-2014-07-31T22:00  BF36.60F        Ohayu Sushi
-2014-08-09T19:34  BJ27.17B3B      Cherry Box Pizza (Forehead film)
-2014-08-17T15:30  B20F            Chairs 
-2014-08-17T18:45  BT21.66B        Minecraft Realm (shared among the users)
-2014-08-18T14:06  MTB14.79B       Subway (everyone had about the same)
-2014-08-18T14:15  T(200%)BM7.90B  Cambridge Blue (T had a pudding, M+B had coffees)
-2014-08-22T09:22  T(2.20)MB10.80B Parkside Pool
-2014-08-23T21:00  T(70%)BMF125B   Rice Boat, Cambridge
-2014-08-24T16:00  FB4.40B         Tea, Southwold
-2014-08-24T16:00  TF4.40B         Tea and ice cream, Southwold
-2014-08-24T12:00  TFMB70M         Petrol for EMF and Southwold
-2014-08-24T14:00  T(70%)FMB70M    Lunch on the pier
-2014-08-24T18:00  T(70%)FMB50M    Dinner at the Old Nelson
-2014-08-28T13:00  JB359.98B       Computers for EMF camp
-2014-08-30T11:00. MTBF23.92F.     Asda shop
-2014-08-30T18:30  MTBF20F1.5B     EMF pizza
-2014-08-30T09:41  MTBF16.15B      Asda breakfast
-2014-08-30T10:04  TB(0.75)4.00B   Asda breakfast 2
-2014-08-31T19:30  BR8.80R         Cambridge Blue
-2014-08-31T21:30  BR35B           Curry King
-2014-09-01T09:00  R15.65B         Portion of a group ticket from CBG to KGX
-2014-09-01T18:00  BR8B            Pub at KGX
-2014-09-01T20:15  BR4.40B         Bus to Tongs HQ
-2014-09-01T23:00  BR10R           Taxi from Tongs HQ
-2014-09-04T12:00  JB143.15J       SSD upgrade for the disposable computers
+2014-07-25T13:30  F,B:20F,15B        Bedouin lunch
+2014-07-29T21:10  J,F,B:16.48B,2F     Cherry Box Pizza on film night
+2014-07-31T20:30  B,F:8F            Cambridge Blue (Benediktiner Weissbier)
+2014-07-31T22:00  B,F:36.60F        Ohayu Sushi
+2014-08-09T19:34  B,J:27.17B,3B      Cherry Box Pizza (Forehead film)
+2014-08-17T15:30  B:20F            Chairs 
+2014-08-17T18:45  B,T:21.66B        Minecraft Realm (shared among the users)
+2014-08-18T14:06  M,T,B:14.79B       Subway (everyone had about the same)
+2014-08-18T14:15  T(200%),B,M:7.90B  Cambridge Blue (T had a pudding, M+B had coffees)
+2014-08-22T09:22  T(2.20),M,B:10.80B Parkside Pool
+2014-08-23T21:00  T(70%),B,M,F:125B   Rice Boat, Cambridge
+2014-08-24T16:00  F,B:4.40B         Tea, Southwold
+2014-08-24T16:00  T,F:4.40B         Tea and ice cream, Southwold
+2014-08-24T12:00  T,F,M,B:70M         Petrol for EMF and Southwold
+2014-08-24T14:00  T(70%),F,M,B:70M    Lunch on the pier
+2014-08-24T18:00  T(70%),F,M,B:50M    Dinner at the Old Nelson
+2014-08-28T13:00  J,B:359.98B       Computers for EMF camp
+2014-08-30T11:00. M,T,B,F:23.92F     Asda shop
+2014-08-30T18:30  M,T,B,F:20F,1.5B     EMF pizza
+2014-08-30T09:41  M,T,B,F:16.15B      Asda breakfast
+2014-08-30T10:04  T,B(0.75):4.00B   Asda breakfast 2
+2014-08-31T19:30  B,R:8.80R         Cambridge Blue
+2014-08-31T21:30  B,R:35B           Curry King
+2014-09-01T09:00  R:15.65B         Portion of a group ticket from CBG to KGX
+2014-09-01T18:00  B,R:8B            Pub at KGX
+2014-09-01T20:15  B,R:4.40B         Bus to Tongs HQ
+2014-09-01T23:00  B,R:10R           Taxi from Tongs HQ
+2014-09-04T12:00  J,B:143.15J       SSD upgrade for the disposable computers
 2014-09-07T12:55  STBMF54.25F     Somers Town Coffee House lunch
 2014-09-07T14:27  FBT(2)M(3)21.40F M&S wine and olives
 2014-09-07T09:13  BFMT(2)33.65B   Train to London
@@ -44,24 +44,24 @@
 2014-10-23T18:00  RPB50.10B       Cocum delivery
 2014-10-25T13:00  RPB30B          Fish and chips at the Geldart
 2014-11-14T13:00  BF7.80F         MSR lunch
-2014-11-15T13:00  FBMT(21.50)93M  Zoo visit
-2014-11-15T16:00  FBM10M          CD-ROM of zoo visit picture
-2014-11-15T16:21  FBMT(70%)66.50M Meal at the Dog and Duck, Linton
-2014-11-23T13:00  FBMT(70%)110B   Meal at Zizzi
-2014-11-26T20:00  BM28B           Meal at Bibimbap
-2014-11-26T21:30  BM7B            Mulled wine at CB1
-2014-11-28T13:00  BMF12.42F       MSR lunch
-2014-12-10T13:00  BF13B           CB1
-2014-12-12T13:00  BF12F10B        Zhonghua
-2014-12-28T17:00  FT(70%)BM65F    Prince Albert, Ely
-2014-12-29T19:00  FT(70%)MB51.70M Taj
-2014-12-30T21:37  J(200%)B19.49J  Pizza for Pup's birthday
-2015-01-01T11:00  BD1D            Parking
-2015-01-01T11:15  BD5D            French fries at Five Guys
-2015-01-01T14:07  FDTBM15M        The Cafe at Milton Park
-2015-01-05T16:00  FBMT(70%)60M    The Mitre
-2015-01-13T12:00  FBMT(8)38F      I Want My Hat Back
-2015-01-13T16:00  FBMT(70%)40M    The Granta
-2015-01-14T13:00  FBM30B          The Box Cafe
-2015-01-17T18:00  FBMSC30B20M     Kymmoy meal
-2015-01-17T19:30  M20S            Spim and Clara escape Kitti
+2014-11-15T13:00  F,B,M,T(21.50):93M  Zoo visit
+2014-11-15T16:00  F,B,M:10M          CD-ROM of zoo visit picture
+2014-11-15T16:21  F,B,M,T(70%):66.50M Meal at the Dog and Duck, Linton
+2014-11-23T13:00  F,B,M,T(70%):110B   Meal at Zizzi
+2014-11-26T20:00  B,M:28B           Meal at Bibimbap
+2014-11-26T21:30  B,M:7B            Mulled wine at CB1
+2014-11-28T13:00  B,M,F:12.42F       MSR lunch
+2014-12-10T13:00  B,F:13B           CB1
+2014-12-12T13:00  B,F:12F,10B        Zhonghua
+2014-12-28T17:00  F,T(70%),B,M:65F    Prince Albert, Ely
+2014-12-29T19:00  F,T(70%),M,B:51.70M Taj
+2014-12-30T21:37  J(200%),B:19.49J  Pizza for Pup's birthday
+2015-01-01T11:00  B,D:1D            Parking
+2015-01-01T11:15  B,D:5D            French fries at Five Guys
+2015-01-01T14:07  F,D,T,B,M:15M        The Cafe at Milton Park
+2015-01-05T16:00  F,B,M,T(70%):60M    The Mitre
+2015-01-13T12:00  F,B,M,T(8):38F      I Want My Hat Back
+2015-01-13T16:00  F,B,M,T(70%):40M    The Granta
+2015-01-14T13:00  F,B,M:30B          The Box Cafe
+2015-01-17T18:00  F,B,M,S,C:30B,20M     Kymmoy meal
+2015-01-17T19:30  M:20S            Spim and Clara escape Kitti
