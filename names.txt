@@ -2,7 +2,6 @@ FrkiMnkiTurtle:F,M,T
 Bear:B
 Pup:J
 RickPaul:R,P
-spimcoot:S
-Clara:C
+SpimClara:S,C
 Tim:K
 Ralf:D
