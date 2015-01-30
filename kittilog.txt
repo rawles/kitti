@@ -65,3 +65,4 @@
 2015-01-14T13:00  F,B,M:30B                   The Box Cafe
 2015-01-17T18:00  F,B,M,S,C:30B,20M           Kymmoy meal
 2015-01-17T19:30  M:20S                       Spim and Clara escape Kitti
+2015-01-29T20:00  F,B:35F                     Sesame
