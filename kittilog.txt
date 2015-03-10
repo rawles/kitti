@@ -69,3 +69,4 @@
 2015-01-30T13:30  F,M,B:41F                   CB2
 2015-01-30T20:00  F,M,B:50F                   Pipasha
 2015-02-05T18:00  F:10B                       Archimedean Society membership
+2015-03-10T19:45  FMT(70%)B:85.56F            India house
