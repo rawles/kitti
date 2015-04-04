@@ -71,3 +71,4 @@
 2015-02-05T18:00  F:10B                       Archimedean Society membership
 2015-03-10T19:45  FMT(70%)B:85.56F            India house
 2015-03-11T12:36  FB:20.95F                   Kingston Arms
+2015-03-15T13:41  F,M,B:57.20B                De Luca
