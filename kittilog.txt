@@ -62,13 +62,16 @@
 2015-01-05T16:00  F,B,M,T(70%):60M            The Mitre
 2015-01-13T12:00  F,B,M,T(8):38F              I Want My Hat Back
 2015-01-13T16:00  F,B,M,T(70%):40M            The Granta
-2015-01-14T13:00  F,B,M:30B                   The Box Cafe
+2015-01-14T13:00  F,B,M:27.40B                The Box Cafe
 2015-01-17T18:00  F,B,M,S,C:30B,20M           Kymmoy meal
 2015-01-17T19:30  M:20S                       Spim and Clara escape Kitti
 2015-01-29T20:00  F,B:35F                     Sesame
 2015-01-30T13:30  F,M,B:41F                   CB2
 2015-01-30T20:00  F,M,B:50F                   Pipasha
+2015-02-01T12:00  BD:2D                       Parking
+2015-02-01T12:00  BDM:20B1M                   Entry to Computer Museum
 2015-02-05T18:00  F:10B                       Archimedean Society membership
 2015-03-10T19:45  FMT(70%)B:85.56F            India house
 2015-03-11T12:36  FB:20.95F                   Kingston Arms
 2015-03-15T13:41  F,M,B:57.20B                De Luca
+2015-03-18T13:42  F,B:34.30B                  Lunch at the Kingston Arms
