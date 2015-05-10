@@ -5,3 +5,5 @@ RickPaul:R,P
 SpimClara:S,C
 Tim:K
 Ralf:D
+Nugget:N
+Jon:Q
