@@ -79,3 +79,12 @@
 2015-05-09T23:00  N,Q,B:9Q                    Taxi from HQ
 2015-05-09T22:00  F,B,M,T(70%),Q,N:20Q,27F    Pizza
 2015-05-10T13:30  F,B,M,T(70%),Q,N:156Q       Navadhanya
+2015-05-02T14:00  R,S,P,B:22.09R              Drab Crab Sandwiches (Pod 2 adjusted)
+2015-05-02T16:00  R,S,P,B:112R                Food and drink
+2015-05-02T16:00  R,S,P,B:25B                 Booze I brought along
+2015-05-03T12:00  R,S,P,B:5P                  Paul's run to the shop
+2015-05-03T12:00  R,S,P,B:10.75S              Spim is back in Kitti's clutches with Spim's one weakness - a pub round (Pod 2 adjusted)
+2015-05-03T18:00  R,S,P,B:22.09R              Fish and Chips etc (Pod 2 adjusted)
+2015-05-04T12:00  R,S,P,B:4B                  Car park at Cromer
+2015-05-04T13:00  R,S,P,B:63.88B              Pub food (Pod 2 adjusted)
+2015-05-03T18:00  R,S,P,B:30S                 Beer from the shop (Pod 2 adjusted)
