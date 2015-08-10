@@ -89,3 +89,10 @@
 2015-05-04T12:00  R,S,P,B:4B                  Car park at Cromer
 2015-05-04T13:00  R,S,P,B:63.88B              Pub food (Pod 2 adjusted)
 2015-05-03T18:00  R,S,P,B:30S                 Beer from the shop (Pod 2 adjusted)
+2015-06-03T17:08  B:17.20J                    Postage of router to Japan
+2015-08-04T18:00  B,F,M,T(70%):80F            (Approximate) Curry at Taj
+2015-08-04T19:30  B,F,M,T(70%):15F            (No idea how much) Cafe which can't sell drink without food
+2015-05-06T17:45  B,F:5F                      Train to Waterbeach
+2015-08-06T20:02  B,F:33.60B                  Five Miles from Anywhere, Upware
+2015-08-06T21:00  B,F:17.75B                  Five Miles from Anywhere, Upware
+2015-08-06T22:30  B,F:50F                     Taxi from Five Miles
