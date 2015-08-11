@@ -96,3 +96,4 @@
 2015-08-06T20:02  B,F:33.60B                  Five Miles from Anywhere, Upware
 2015-08-06T21:00  B,F:17.75B                  Five Miles from Anywhere, Upware
 2015-08-06T22:30  B,F:50F                     Taxi from Five Miles
+2015-08-10T22:00  J(200%),B:30B               Meal from Mai Thai
