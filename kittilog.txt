@@ -98,3 +98,4 @@
 2015-08-06T22:30  B,F:50F                     Taxi from Five Miles
 2015-08-10T22:00  J(200%),B:30B               Meal from Mai Thai
 2015-08-11T13:30  J(200%),B:31.50J            Lunch at CB2 (nice salad)
+2015-09-02T17:12  B,F,M,T(70%):61.80M         Tulip (inc card fee).
