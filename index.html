@@ -236,7 +236,7 @@ function parseLine( line ) {
             people[ identifier ].credit += creditAmount;
             totalCredited += creditAmount;
             creditors.push( identifier );
-            comments.push( 'CREDIT: '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+' ukp.' );
+            comments.push( '<em>Credit:</em>: '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+'GBP.' );
         }
         else if( debtor_subtokens ) {
             identifier = debtor_subtokens[1];
@@ -245,10 +245,10 @@ function parseLine( line ) {
             debitAmount2 = parseFloat( debtor_subtokens[5] );
             if( debitAmount1 || debitAmount2 ) {
                 if( debitAmount1 ) {
-                    fixedDebtors[ identifier ] = debitAmount1; // (don't debit yet in case currency is not ukp)
+                    fixedDebtors[ identifier ] = debitAmount1; // (don't debit yet in case currency is not gbp)
                 }
                 else {
-                    fixedDebtors[ identifier ] = debitAmount2; // (don't debit yet in case currency is not ukp)
+                    fixedDebtors[ identifier ] = debitAmount2; // (don't debit yet in case currency is not gbp)
                 }
             }
             else if( percentage ) {
@@ -268,14 +268,14 @@ function parseLine( line ) {
         var debitAmount = fixedDebtors[ identifier ];
         people[ identifier ].credit -= debitAmount;
         remainingDebt -= debitAmount;
-        comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+' ukp (fixed amount).' );
+        comments.push( '<em>Debit</em>: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+'GBP (fixed amount).' );
     }
     var unitDebt = remainingDebt / totalWeighting;
     for( var identifier in weightedDebtors ) {
         var weight = weightedDebtors[ identifier ];
         var debitAmount = unitDebt * weight;
         people[ identifier ].credit -= debitAmount;
-        comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+' ukp (share weighted by '+weight.toFixed(2)+').' );
+        comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+'GBP (share weighted by '+weight.toFixed(2)+').' );
     }
     incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors );
     total_transactions += totalCredited;
