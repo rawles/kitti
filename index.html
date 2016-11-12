@@ -236,7 +236,7 @@ function parseLine( line ) {
             people[ identifier ].credit += creditAmount;
             totalCredited += creditAmount;
             creditors.push( identifier );
-            comments.push( '<em>Credit:</em>: '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+'GBP.' );
+            comments.push( '<em>Credit:</em> '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+'GBP.' );
         }
         else if( debtor_subtokens ) {
             identifier = debtor_subtokens[1];
@@ -275,7 +275,7 @@ function parseLine( line ) {
         var weight = weightedDebtors[ identifier ];
         var debitAmount = unitDebt * weight;
         people[ identifier ].credit -= debitAmount;
-        comments.push( 'DEBIT: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+'GBP (share weighted by '+weight.toFixed(2)+').' );
+        comments.push( '<em>Debit</em>: '+identifier+' ('+people[identifier].full+') gets -'+debitAmount.toFixed(2)+'GBP (share weighted by '+weight.toFixed(2)+').' );
     }
     incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors );
     total_transactions += totalCredited;
