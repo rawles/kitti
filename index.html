@@ -515,12 +515,15 @@ instructions how to enable JavaScript in your web browser</a>.
 
 <div id="currentStatus">status</div>
 
-<p align="center"><canvas id="canvas" width="1000" height="500">(Canvas drawing not supported by your browser.)</canvas></p>
+<figure>
+<canvas id="canvas" width="1000" height="500">(Canvas drawing not supported by your browser.)</canvas>
+<figcaption>
+<em>Left:</em> The typical movement of money in the system.<br/>
+<em>Right:</em> The flow of money that would clear the system if it followed the typical movement pattern.
+</figcaption>
+</figure>
 
-<table border="0" cellpadding="20">
-<tr><td><b>Left:</b> The typical movement of money in the system.</td>
-<td><b>Right:</b> The flow of money that would clear the system if it followed the typical movement pattern.</td></tr>
-</table>
+<h2>Add a transaction</h2>
 
 <form target="_blank" method="post" action="mailto:ferkel@gmail.com" enctype="text/plain">
   New transaction:
@@ -529,7 +532,8 @@ instructions how to enable JavaScript in your web browser</a>.
   (will attempt to email ferkel@gmail.com)
 </form>
 
-<p>Test area:</p>
+<h2>Test area</h2>
+
 <p>
   <textarea id="input_transactions" cols="100" rows="20" style="vertical-align:top"></textarea>
   <textarea id="input_names" cols="20" rows="20" style="vertical-align:top"></textarea>
