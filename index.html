@@ -359,8 +359,10 @@ function printStatus() {
     for( var i in names ) {
         var person = people[ names[ i ] ];
         var number_css_class = "number-currency-positive";
-        var number_css_class = "number-currency-negative";
-        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td class=\"number\">"+person.credit.toFixed(2)+"</td></tr>";
+	if ( person.credit < 0 ) {
+        	number_css_class = "number-currency-negative";
+	}
+        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td class=\""+number_css_class+"\">"+person.credit.toFixed(2)+"</td></tr>";
     }
     html += "</table>";
     
