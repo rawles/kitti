@@ -403,7 +403,7 @@ function processData() {
         if( comments ) {
             log_html += "<dt>"+line+"</dt>\n";
             for ( var comment in comments ) {
-                log_html += "<dd>"+comment+"</dd>\n";
+                log_html += "<dd>"+comments[comment]+"</dd>\n";
             }
         }
     }
