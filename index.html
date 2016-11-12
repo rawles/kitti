@@ -355,10 +355,10 @@ function computeFlowMatrix() {
 }
 
 function printStatus() {
-    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>People</th><th colspan=\"2\">Amount</th></tr>\n";
+    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
     for( var i in names ) {
         var person = people[ names[ i ] ];
-        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td align=\"right\">"+person.credit.toFixed(2)+"</td></tr>";
+        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td class=\"number\">"+person.credit.toFixed(2)+"</td></tr>";
     }
     html += "</table>";
     
