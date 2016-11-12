@@ -362,9 +362,9 @@ function printStatus() {
     }
     html += "</table>";
     
-    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions.</p>";
+    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions.";
     
-    html += "<p>Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(2)+"</p>";
+    html += "Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(1)+"</p>";
     
     /*
     html += "<hr><h4>Flow matrix:</h4>";
@@ -468,7 +468,7 @@ function drawThings() {
                 ctx.lineWidth =  Math.log( flow_val )*2.0 + 1;
                 canvas_arrow( ctx, x2[iPerson], y[iPerson], x2[jPerson], y[jPerson], true );
                 ctx.fillStyle = "rgba(0,0,0,0.9)";
-                ctx.font = "12px Arial";
+                ctx.font = "8px Arial";
                 ctx.fillText( String.fromCharCode(163)+flow_val.toFixed(0), (x2[iPerson]+x2[jPerson])/2.0, (y[iPerson]+y[jPerson])/2.0 );
             }
         }
@@ -516,7 +516,7 @@ instructions how to enable JavaScript in your web browser</a>.
 <div id="currentStatus">status</div>
 
 <figure>
-<canvas id="canvas" width="1000" height="500">(Canvas drawing not supported by your browser.)</canvas>
+<canvas id="canvas" width="500" height="250">(Canvas drawing not supported by your browser.)</canvas>
 <figcaption>
 <em>Left:</em> The typical movement of money in the system.<br/>
 <em>Right:</em> The flow of money that would clear the system if it followed the typical movement pattern.
