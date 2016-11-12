@@ -396,15 +396,18 @@ function printStatus() {
 }
 
 function processData() {
-    var log_html = "<h4>Parsed transactions:</h4><table border=\"1\">";
+    var log_html = "<h2>Parsed transactions</h2>\n<dl>\n";
     for( var i in log_lines ) {
         var line = log_lines[i];
         var comments = parseLine( line );
         if( comments ) {
-            log_html += "<tr><td><b>"+line+"</b></td><td>"+comments.join("<br>")+"</td></tr>";
+            log_html += "<dt>"+line+"</dt>\n";
+            for ( var comment in comments ) {
+                log_html += "<dd>"+comment+"</dd>\n";
+            }
         }
     }
-    log_html += "</table>";
+    log_html += "</dl>";
     computeTransitionMatrix();
     computeFlowMatrix();
     document.getElementById("currentStatus").innerHTML = printStatus();
