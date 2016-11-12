@@ -9,6 +9,8 @@
 <p id="crumbs"><a href="/">rawl.es</a> &rarr;
 </p><hr/>
 
+<h1>Welcome to KITTI</h1>
+
 <script>
 
 // ------------- maths functions (should probably move to another file) --------------------------------
@@ -353,7 +355,7 @@ function computeFlowMatrix() {
 }
 
 function printStatus() {
-    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">";
+    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>People</th><th colspan=\"2\">Amount</th></tr>\n";
     for( var i in names ) {
         var person = people[ names[ i ] ];
         html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td align=\"right\">"+person.credit.toFixed(2)+"</td></tr>";
