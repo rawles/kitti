@@ -401,7 +401,7 @@ function processData() {
         var line = log_lines[i];
         var comments = parseLine( line );
         if( comments ) {
-            log_html += "<dt>"+line+"</dt>\n";
+            log_html += "<dt><code>"+line+"</code></dt>\n";
             for ( var comment in comments ) {
                 log_html += "<dd>"+comments[comment]+"</dd>\n";
             }
