@@ -358,11 +358,13 @@ function printStatus() {
     var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
     for( var i in names ) {
         var person = people[ names[ i ] ];
+        var number_css_class = "number-currency-positive";
+        var number_css_class = "number-currency-negative";
         html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td class=\"number\">"+person.credit.toFixed(2)+"</td></tr>";
     }
     html += "</table>";
     
-    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions.";
+    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions. ";
     
     html += "Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(1)+"</p>";
     
