@@ -371,7 +371,7 @@ function printStatus() {
     html += "Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(1)+"</p>";
     
     /*
-    html += "<hr><h4>Flow matrix:</h4>";
+    html += "<h2>Flow matrix:</h2>";
     html += "<p>(how the debt will clear, if the transactions are along historical lines)</p>";
     html += "<table border=\"1\"><tr><td></td>";
     for( var row in flow_matrix ) {
@@ -383,7 +383,7 @@ function printStatus() {
     }
     html += "</table>";
 
-    html += "<hr><h4>Transition matrix:</h4>";
+    html += "<h2>Transition matrix:</h2>";
     html += "<p>(shows how much money has flowed between people, on average)</p>";
     html += "<table border=\"1\">";
     for( var row in transition_matrix ) {
@@ -546,8 +546,6 @@ instructions how to enable JavaScript in your web browser</a>.
   <textarea id="input_names" cols="20" rows="20" style="vertical-align:top"></textarea>
   <input type="button" value="Parse" onclick="parse_input();" style="vertical-align:top">
 </p>
-
-<hr>
 
 <div id="log">log</div>
     
