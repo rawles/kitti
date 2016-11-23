@@ -101,3 +101,4 @@
 2015-09-02T17:12  B,F,M,T(70%):61.80M         Tulip (inc card fee).
 2016-11-12T19:30  B,F,M,T(70%):60.79F         Pizza Hut
 2016-11-18T13:29  B,M:22.80B3M                Rainbow Cafe, CBG
+2016-11-23T18:32  B,J:25.85J                  Mai Thai, CBG	
