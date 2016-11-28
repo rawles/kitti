@@ -102,6 +102,7 @@
 2016-11-12T19:30  B,F,M,T(70%):60.79F         Pizza Hut
 2016-11-18T13:29  B,M:22.80B3M                Rainbow Cafe, CBG
 2016-11-23T18:32  B,J:25.85J                  Mai Thai, CBG	
+2016-11-26T14:30  B:2.99M                     Book from Oxfam
 2016-11-26T15:00  B,F,M,T(70%):27.60B         Box Cafe (Games Box)
 2016-11-26T18:00  MFBT(70%):47.35M            Kingston Arms
 2016-11-27T12:30  B:15.60J                    Vegan fair
