@@ -109,5 +109,6 @@
 2016-11-27T16:00  M(1.37),T(0.85):2.22B       Vending at CMS
 2016-11-27T21:00  B,F,M,J,T(70%),G(200%),L(200%):114.10B144.10J  Strada
 2016-11-29T20:00  B,J:7.99J                   Game 'Tumble'
+2016-11-30T21:42  B:130R                      Beekeeping course
 2016-12-03T14:00  B:4M                        Dosa
 
