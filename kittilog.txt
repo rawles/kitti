@@ -112,3 +112,4 @@
 2016-11-30T21:42  B:130R                      Beekeeping course
 2016-12-03T14:00  B:4M                        Dosa
 2016-12-08T17:47  B:16.50R                    Ilkley Beer Festival tickets
+2016-12-13T15:35  R:130B                      Repaid fee for beekeeping course
