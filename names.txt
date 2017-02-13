@@ -3,8 +3,9 @@ Bear:B
 Pup:J
 RickPaul:R,P
 SpimClara:S,C
-Tim:K
+Tim:O
 Ralf:D
 Nugget:N
 Jon:Q
 AdamJadeAmanda:G,L
+Kieran:K

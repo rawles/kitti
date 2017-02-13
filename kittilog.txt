@@ -35,8 +35,8 @@
 2014-09-07T18:30  B(3.76),T:7.42B             Snacks for the train from Little Waitrose
 2014-09-14T14:30  B,J:82.40J                  We accidentally a lot of monay on kayaking
 2014-09-28T13:00  M,B,T,F:60.42M              Rose pub lunch (rated 1)
-2014-10-18T18:00  K(9.99),B:21.50B            Rainbow Cafe
-2014-10-19T18:00  B:9.99K                     Tim zeroes his Kitti balance
+2014-10-18T18:00  O(9.99),B:21.50B            Rainbow Cafe
+2014-10-19T18:00  B:9.99O                     Tim zeroes his Kitti balance
 2014-10-24T13:00  R,P,B:42P                   Rainbow Cafe
 2014-10-24T18:00  R,P,B:23P                   Taxi
 2014-10-24T23:00  R,P,B:18P                   Taxi
@@ -113,3 +113,10 @@
 2016-12-03T14:00  B:4M                        Dosa
 2016-12-08T17:47  B:16.50R                    Ilkley Beer Festival tickets
 2016-12-13T15:35  R:130B                      Repaid fee for beekeeping course
+2017-02-08T18:00  F,K,B:31.50F                Pizza in the Salisbury Arms (estimated)
+2017-02-10T18:40  B,R,P,S:56.41B              Food and beer at Booths
+2017-02-11T15:00  B(3.33),R(2.33),S(1.33):10S Ilkley Beer festival ('tough luck' tokens shared among each)
+2017-02-11T17:34  B,R,P,S:20S8.55B            Food and beer at Booths
+2017-02-11T18:00  B,R,P,S:46R                 Pizza
+2017-02-12T10:18  S,B,R,P:28P                 Duck lunch
+2017-02-12T10:18  B,R,P:10P                   Roast veg dinner
