@@ -113,7 +113,7 @@
 2016-12-03T14:00  B:4M                        Dosa
 2016-12-08T17:47  B:16.50R                    Ilkley Beer Festival tickets
 2016-12-13T15:35  R:130B                      Repaid fee for beekeeping course
-2017-02-08T18:00  F,K,B:31.50F                Pizza in the Salisbury Arms (estimated)
+2017-02-08T18:00  F,K,B:30F                   Pizza in the Salisbury Arms
 2017-02-10T18:40  B,R,P,S:56.41B              Food and beer at Booths
 2017-02-11T15:00  B(3.33),R(2.33),S(1.33):10S Ilkley Beer festival ('tough luck' tokens shared among each)
 2017-02-11T17:34  B,R,P,S:20S8.55B            Food and beer at Booths
