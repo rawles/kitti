@@ -122,3 +122,6 @@
 2017-02-12T10:18  B,R,P:10P                   Roast veg dinner
 2017-02-15T21:00  B,R:60B20R                  Navadhanya
 2017-02-17T15:30  B,K:20.40B                  Elitian printers for Block Party
+2017-02-18T17:42  B:2.19P                     Pepsi Max
+2017-04-15T15:30  B,M:22M,26B                 Late lunch at Thela
+
