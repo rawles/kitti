@@ -250,7 +250,7 @@ function parseLine( line ) {
             people[ identifier ].credit += creditAmount;
             totalCredited += creditAmount;
             creditors.push( identifier );
-            comments.push( '<em>Credit:</em> '+identifier+' ('+people[identifier].full+') gets +'+creditAmount+'GBP.' );
+            comments.push( '<em>Credit:</em> '+identifier+' ('+people[identifier].full+') gets +'+creditAmount.toFixed(2)+'GBP.' );
         }
         else if( debtor_subtokens ) {
             identifier = debtor_subtokens[1];
