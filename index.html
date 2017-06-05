@@ -3,11 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <title>kitti</title>
-<link rel="stylesheet" type="text/css" href="http://rawl.es/x/css/2017.css"/>
 </head>
 <body>
-<p id="crumbs"><a href="/">rawl.es</a> &rarr;
-</p><hr/>
 
 <h1>Welcome to KITTI</h1>
 
@@ -187,8 +184,8 @@ function clearData() {
 function requestFreshData() {
     clearData();
     if( true ) {
-        getAsync( "http://rawl.es/kitti/kittilog.txt", storeLog );
-        getAsync( "http://rawl.es/kitti/names.txt", storeNames );
+        getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
+        getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
     }
     else {
         // useful for local debugging
