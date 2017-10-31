@@ -72,7 +72,7 @@
 2015-02-01T12:00  BDM:20B1M                   Entry to Computer Museum
 2015-02-05T18:00  F:10B                       Archimedean Society membership
 2015-03-10T19:45  FMT(70%)B:85.56F            India house
-2015-03-11T12:36  FB:20.95F                   Kingston Arms
+015-03-11T12:36  FB:20.95F                   Kingston Arms
 2015-03-15T13:41  F,M,B:57.20B                De Luca
 2015-03-18T13:42  F,B:34.30B                  Lunch at the Kingston Arms
 2015-05-08T21:15  F,B:45B                     Evening meal at the Bridge, Waterbeach
@@ -124,7 +124,7 @@
 2017-02-17T15:30  B,K:20.40B                  Elitian printers for Block Party
 2017-02-18T17:42  B:2.19P                     Pepsi Max
 2017-04-15T15:30  B,M:22M,26B                 Late lunch at Thela
-
 2017-05-11T20:56  B6D                         Ralf zeroes his balance.
 2017-05-15T21:00  B:12.50J                    Change from pizza.
+2017-05-23T21:00  BFGLJ:218F                  Riverside Restaurant after geofun
 2017-10-29T22:30  Y,B,F,G,L:322.03G           Hotel du Vin.
