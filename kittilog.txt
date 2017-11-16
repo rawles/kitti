@@ -127,4 +127,5 @@
 2017-05-11T20:56  B6D                         Ralf zeroes his balance.
 2017-05-15T21:00  B:12.50J                    Change from pizza.
 2017-05-23T21:00  BFGLJ:218F                  Riverside Restaurant after geofun
-2017-10-29T22:30  Y,B,F,G,L:322.03G           Hotel du Vin.
+2017-10-29T22:30  Y,B,F,G,L:322.03G           Hotel du Vin.
+2017-11-16T21:00  KFB:34F.                    Pizza in Salisbury Arms
