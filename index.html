@@ -180,6 +180,7 @@ function clearData() {
     numFilesLoaded = 0;
     log_lines = new Array();
     total_transactions = 0;
+    num_transactions = 0;
 }
 
 function requestFreshData() {
@@ -310,6 +311,7 @@ function parseLine( line ) {
     }
     incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors );
     total_transactions += totalCredited;
+    num_transactions += 1;
     return comments;
 }
 
@@ -402,7 +404,7 @@ function printStatus() {
     }
     html += "</table>";
     
-    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions. ";
+    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+num_transactions+" transactions. ";
     
     html += "Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(1)+"</p>";
     
