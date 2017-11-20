@@ -139,17 +139,21 @@ function getAsync( url, callback ) {
 }
 
 function storeNames( text ) {
-    document.getElementById("input_names").value = text;
+    //document.getElementById("input_names").value = text;
+    people = new Object();
+    names = new Array();
+    known_identifiers = new Array();
     name_lines = text.split("\n");
     person_index = 0;
     for( var i = 0; i < name_lines.length; ++i ) {
-        entries = name_lines[i].split(/[:,]/);
+        var entries = name_lines[i].split(/[:,]/);
         if( entries.length < 2 ) continue;
         var full_name = entries[0];
         people[ full_name ] = new Object();
         people[ full_name ].full = full_name;
         people[ full_name ].credit = 0.0;
         people[ full_name ].index = person_index;
+        people[ full_name ].abbreviations = entries.slice(1,entries.length).join(',');
         person_index++;
         names.push( full_name );
         for( var j = 1; j < entries.length; ++j ) {
@@ -161,7 +165,7 @@ function storeNames( text ) {
 }
 
 function storeLog( text ) {
-    document.getElementById("input_transactions").value = text;
+    //document.getElementById("input_transactions").value = text;
     log_lines = text.split("\n");
 }
 
@@ -174,11 +178,9 @@ function checkAllLoaded() {
 
 function clearData() {
     numFilesLoaded = 0;
-    people = new Object();
-    names = new Array();
-    known_identifiers = new Array();
     log_lines = new Array();
     total_transactions = 0;
+    num_transactions = 0;
 }
 
 function requestFreshData() {
@@ -224,6 +226,24 @@ function parseLine( line ) {
     if( !transaction_tokens || transaction_tokens.length < 2 ) {
         comments.push( 'ERROR: Failed to parse this transaction: '+transaction+' using regexp: '+transaction_match );
         return comments;
+    }
+
+    // does this transaction involve any of the selected users?
+    if(filter_users.length > 0) {
+        var found_filtered_users = false;
+        for( var j in transaction_tokens ) {
+            var token = transaction_tokens[j];
+            var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
+            var debtor_subtokens = token.match( new RegExp( debtor_match, "i" ) );
+            for( var i_filter_user in filter_users ) {
+                var filter_user = filter_users[i_filter_user];
+                if( (creditor_subtokens && filter_user == creditor_subtokens[3]) ||
+                    (debtor_subtokens && filter_user == debtor_subtokens[1]) ) {
+                    found_filtered_users = true;
+                }
+            }
+        }
+        if(!found_filtered_users) { return ""; }
     }
 
     var totalCredited = 0.0;
@@ -274,6 +294,7 @@ function parseLine( line ) {
             }
         }
     }
+    
     var remainingDebt = totalCredited;
     for( var identifier in fixedDebtors ) {
         var debitAmount = fixedDebtors[ identifier ];
@@ -290,6 +311,7 @@ function parseLine( line ) {
     }
     incrementTransactionMatrix( totalCredited, creditors, fixedDebtors, weightedDebtors );
     total_transactions += totalCredited;
+    num_transactions += 1;
     return comments;
 }
 
@@ -366,18 +388,23 @@ function computeFlowMatrix() {
 }
 
 function printStatus() {
-    var html = "<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
+    var html = "";
+    if(filter_users.length > 0) {
+        html += "<p>Currently showing only transactions that involve " + filter_users.join(',') + ". <a href=\"javascript:setFilteredUsers(&quot;&quot;)\">Reset</a>";
+    }
+    html +="<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
     for( var i in names ) {
         var person = people[ names[ i ] ];
         var number_css_class = "number-currency-positive";
-	if ( person.credit < 0 ) {
-        	number_css_class = "number-currency-negative";
-	}
-        html += "<tr><td>" + person.full + "</td><td>"+String.fromCharCode(163)+"</td><td class=\""+number_css_class+"\">"+person.credit.toFixed(2)+"</td></tr>";
+    if ( person.credit < 0 ) {
+            number_css_class = "number-currency-negative";
+    }
+        html += "<tr><td><a href=\"javascript:setFilteredUsers(&quot;" + person.abbreviations + "&quot;)\">" + person.full + "</a></td><td>"
+             + String.fromCharCode(163) + "</td><td class=\"" + number_css_class + "\">" + person.credit.toFixed(2) + "</td></tr>";
     }
     html += "</table>";
     
-    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+log_lines.length+" transactions. ";
+    html += "<p>Total borrowed off each other: "+String.fromCharCode(163)+total_transactions.toFixed(2)+", over "+num_transactions+" transactions. ";
     
     html += "Expected transactions for debt to clear, if they follow the same pattern: "+clearing_cost.toFixed(1)+"</p>";
     
@@ -406,8 +433,40 @@ function printStatus() {
     return html;
 }
 
+function getFilteredUsers() {
+    try {
+        filter_users_string = localStorage.getItem("filter_users");
+        if(filter_users_string=="") {
+            filter_users = [];
+        }
+        else {
+            filter_users = filter_users_string.split(',');
+        }
+    } catch(e) {
+        filter_users = [];
+        console.log("Error getting localStorage:",e);
+    }
+}
+
+function setFilteredUsers(f) {
+    try {
+        localStorage.setItem("filter_users",f);
+    } catch(e) {
+        console.log("Error setting localStorage:",e);
+    }
+    if(f=="") {
+        filter_users = [];
+    }
+    else {
+        filter_users = f.split(',');
+    }
+    requestFreshData();
+}
+
 function processData() {
-    var log_html = "<h2>Parsed transactions</h2>\n<dl>\n";
+    getFilteredUsers();
+    
+    var log_html = "<hr><h2>Parsed transactions (those involving "+filter_users.join(',')+")</h2>\n<dl>\n";
     for( var i in log_lines ) {
         var line = log_lines[i];
         var comments = parseLine( line );
@@ -541,6 +600,7 @@ instructions how to enable JavaScript in your web browser</a>.
 </figcaption>
 </figure>
 
+<!--
 <h2>Add a transaction</h2>
 
 <form target="_blank" method="post" action="mailto:ferkel@gmail.com" enctype="text/plain">
@@ -557,8 +617,8 @@ instructions how to enable JavaScript in your web browser</a>.
   <textarea id="input_names" cols="20" rows="20" style="vertical-align:top"></textarea>
   <input type="button" value="Parse" onclick="parse_input();" style="vertical-align:top">
 </p>
-
+-->
 <div id="log">log</div>
-    
+
 </body>
 </html>
