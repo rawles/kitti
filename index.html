@@ -253,6 +253,7 @@ function storeLog( text ) {
 function checkAllLoaded() {
     numFilesLoaded += 1;
     if( numFilesLoaded == 2 ) {
+        getFilteredUsersFromStorage();
         processData();
     }
 }
@@ -513,7 +514,7 @@ function printStatus() {
     return html;
 }
 
-function getFilteredUsers() {
+function getFilteredUsersFromStorage() {
     try {
         filter_users_string = localStorage.getItem("filter_users");
         if(filter_users_string=="") {
@@ -544,8 +545,6 @@ function setFilteredUsers(f) {
 }
 
 function processData() {
-    getFilteredUsers();
-
     total_transactions = 0;
     num_transactions = 0;
     for(var person in people) {
