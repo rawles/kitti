@@ -165,7 +165,6 @@ function getAsync( url, callback ) {
 }
 
 function storeNames( text ) {
-    //document.getElementById("input_names").value = text;
     people = new Object();
     names = new Array();
     known_identifiers = new Array();
@@ -191,7 +190,6 @@ function storeNames( text ) {
 }
 
 function storeLog( text ) {
-    //document.getElementById("input_transactions").value = text;
     log_lines = text.split("\n");
 }
 
@@ -202,15 +200,8 @@ function checkAllLoaded() {
     }
 }
 
-function clearData() {
-    numFilesLoaded = 0;
-    log_lines = new Array();
-    total_transactions = 0;
-    num_transactions = 0;
-}
-
 function requestFreshData() {
-    clearData();
+    numFilesLoaded = 0;
     if( true ) {
         getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
         getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
@@ -486,12 +477,18 @@ function setFilteredUsers(f) {
     else {
         filter_users = f.split(',');
     }
-    requestFreshData();
+    processData();
 }
 
 function processData() {
     getFilteredUsers();
-    
+
+    total_transactions = 0;
+    num_transactions = 0;
+    for(var person in people) {
+        people[ person ].credit = 0.0;
+    }
+
     var log_html = "<hr><h2>Parsed transactions"
     if(filter_users.length > 0) {
         log_html += " (those involving "+filter_users.join(',')+")";
@@ -600,13 +597,6 @@ function drawThings() {
     }
 }
 
-function parse_input() {
-    clearData();
-    storeLog( document.getElementById("input_transactions").value );
-    storeNames( document.getElementById("input_names").value );
-    processData();
-}
-
 window.onload = requestFreshData;
 
 </script>
@@ -630,24 +620,6 @@ instructions how to enable JavaScript in your web browser</a>.
 </figcaption>
 </figure>
 
-<!--
-<h2>Add a transaction</h2>
-
-<form target="_blank" method="post" action="mailto:ferkel@gmail.com" enctype="text/plain">
-  New transaction:
-  <input type=text name=kitti_transaction>
-  <input type=submit value="Submit">
-  (will attempt to email ferkel@gmail.com)
-</form>
-
-<h2>Test area</h2>
-
-<p>
-  <textarea id="input_transactions" cols="100" rows="20" style="vertical-align:top"></textarea>
-  <textarea id="input_names" cols="20" rows="20" style="vertical-align:top"></textarea>
-  <input type="button" value="Parse" onclick="parse_input();" style="vertical-align:top">
-</p>
--->
 <div id="log">log</div>
 
 </body>
