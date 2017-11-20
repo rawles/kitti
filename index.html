@@ -13,12 +13,13 @@ border-collapse:
 collapse; border-spacing: 0;
 }
 td, th {
-border: 10px solid transparent; /* No more visible border */
+border: 5px solid transparent; /* No more visible border */
 height: 30px;
 }
 th {
 background: #DFDFDF; /* Darken header a bit */
 font-weight: bold;
+text-align: left;
 }
 td {
 background: #FAFAFA;
@@ -28,6 +29,62 @@ text-align: left;
 tr:nth-child(even) td { background: #F1F1F1; } 
 /* Cells in odd rows (1,3,5...) are another (excludes header cells) */
 tr:nth-child(odd) td { background: #FEFEFE; }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 </style>
 </head>
 <body>
@@ -404,19 +461,25 @@ function computeFlowMatrix() {
     flow_matrix = matrix_times_scalar( e, -1.0 );
 }
 
+function handleToggle(i) {
+    console.log('handleToggle'+i);
+}
+
 function printStatus() {
     var html = "";
     if(filter_users.length > 0) {
         html += "<p>Currently showing only transactions that involve " + filter_users.join(',') + ". <a href=\"javascript:setFilteredUsers(&quot;&quot;)\">Reset</a>";
     }
-    html +="<table align=\"center\" border=\"0\" cellspacing=\"10\">\n<tr><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
+    html +="<table>\n<tr><th></th><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
     for( var i in names ) {
         var person = people[ names[ i ] ];
         var number_css_class = "number-currency-positive";
-    if ( person.credit < 0 ) {
-            number_css_class = "number-currency-negative";
-    }
-        html += "<tr><td><a href=\"javascript:setFilteredUsers(&quot;" + person.abbreviations + "&quot;)\">" + person.full + "</a></td><td>"
+        if ( person.credit < 0 ) {
+                number_css_class = "number-currency-negative";
+        }
+        html += "<tr>"
+             + "<td><label class=\"switch\"><input type=\"checkbox\" checked onchange=\"handleToggle("+i+");\"><span class=\"slider round\"></span></label></td>"
+             + "<td>" + person.full + "</td><td>"
              + String.fromCharCode(163) + "</td><td class=\"" + number_css_class + "\">" + person.credit.toFixed(2) + "</td></tr>";
     }
     html += "</table>";
@@ -606,9 +669,6 @@ window.onload = requestFreshData;
 Here are the <a href="http://www.enable-javascript.com/" target="_blank">
 instructions how to enable JavaScript in your web browser</a>.
 </p></noscript>
-
-</head>
-<body>
 
 <div id="currentStatus">status</div>
 
