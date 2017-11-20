@@ -1,3 +1,19 @@
+window.onload = requestFreshData;
+
+function requestFreshData() {
+    numFilesLoaded = 0;
+    if( true ) {
+        getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
+        getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
+    }
+    else {
+        // useful for local debugging
+        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  JFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BP36.60P     Imaginary Sushi" );
+        storeNames( "FrkiMnkiTurtle:F,M,T\nRickPaul:R,P\nBear:B\nPup:J\n" );
+        processData();
+    }
+}
+
 function getAsync( url, callback ) {
     var http = new XMLHttpRequest();
     // need to always request a different URL to avoid getting a cached copy
@@ -9,6 +25,10 @@ function getAsync( url, callback ) {
         }
     };
     http.send();
+}
+
+function storeLog( text ) {
+    log_lines = text.split("\n");
 }
 
 function storeNames( text ) {
@@ -36,10 +56,6 @@ function storeNames( text ) {
     transition_matrix = matrix_zeros( names.length );
 }
 
-function storeLog( text ) {
-    log_lines = text.split("\n");
-}
-
 function checkAllLoaded() {
     numFilesLoaded += 1;
     if( numFilesLoaded == 2 ) {
@@ -48,18 +64,39 @@ function checkAllLoaded() {
     }
 }
 
-function requestFreshData() {
-    numFilesLoaded = 0;
-    if( true ) {
-        getAsync( "http://rawles.github.io/kitti/kittilog.txt", storeLog );
-        getAsync( "http://rawles.github.io/kitti/names.txt", storeNames );
+function processData() {
+    total_transactions = 0;
+    num_transactions = 0;
+    for( var i_name in names ) {
+        var person = names[ i_name ];
+        people[ person ].credit = 0.0;
     }
-    else {
-        // useful for local debugging
-        storeLog( "2014-07-25T13:30  FB20F15B     Bedouin lunch\n2014-07-29T21:10  JFB16.48B2F  Cherry Box Pizza on film night\n2014-07-31T20:30  BF8F         Cambridge Blue (Benediktiner Weissbier)\n2014-07-31T22:00  BP36.60P     Imaginary Sushi" );
-        storeNames( "FrkiMnkiTurtle:F,M,T\nRickPaul:R,P\nBear:B\nPup:J\n" );
-        processData();
+    
+    var log_html="";
+    if( !noneInSubset() ) {
+        log_html = "<hr><h2>Parsed transactions"
+        if( !allInSubset() ) {
+            var included = getUserSubsetAsString();
+            log_html += " (those involving "+included+")";
+        }
+        log_html += "</h2>\n<dl>\n";
+        for( var i in log_lines ) {
+            var line = log_lines[i];
+            var comments = parseLine( line );
+            if( comments ) {
+                log_html += "<dt><code>"+line+"</code></dt>\n";
+                for ( var comment in comments ) {
+                    log_html += "<dd>"+comments[comment]+"</dd>\n";
+                }
+            }
+        }
+        log_html += "</dl>";
     }
+    computeTransitionMatrix();
+    computeFlowMatrix();
+    document.getElementById("currentStatus").innerHTML = printStatus();
+    document.getElementById("log").innerHTML = log_html;
+    drawThings()
 }
 
 function parseLine( line ) {
@@ -378,63 +415,6 @@ function storeUserSubset() {
     processData();*/
 }
 
-function processData() {
-    total_transactions = 0;
-    num_transactions = 0;
-    for( var i_name in names ) {
-        var person = names[ i_name ];
-        people[ person ].credit = 0.0;
-    }
-    
-    var log_html="";
-    if( !noneInSubset() ) {
-        log_html = "<hr><h2>Parsed transactions"
-        if( !allInSubset() ) {
-            var included = getUserSubsetAsString();
-            log_html += " (those involving "+included+")";
-        }
-        log_html += "</h2>\n<dl>\n";
-        for( var i in log_lines ) {
-            var line = log_lines[i];
-            var comments = parseLine( line );
-            if( comments ) {
-                log_html += "<dt><code>"+line+"</code></dt>\n";
-                for ( var comment in comments ) {
-                    log_html += "<dd>"+comments[comment]+"</dd>\n";
-                }
-            }
-        }
-        log_html += "</dl>";
-    }
-    computeTransitionMatrix();
-    computeFlowMatrix();
-    document.getElementById("currentStatus").innerHTML = printStatus();
-    document.getElementById("log").innerHTML = log_html;
-    drawThings()
-}
-
-// adapted from http://stackoverflow.com/a/6333775/126823
-function canvas_arrow(context, fromx, fromy, tox, toy, draw_arrow){
-    var headlen = 10; // length of head in pixels
-    var end_gap = 20; // distance of head and tail from requested positions
-    var angle = Math.atan2(toy-fromy,tox-fromx);
-    fromx += end_gap * Math.cos(angle);
-    fromy += end_gap * Math.sin(angle);
-    tox -= end_gap * Math.cos(angle);
-    toy -= end_gap * Math.sin(angle);
-    context.beginPath();
-    context.moveTo(fromx, fromy);
-    context.lineTo(tox, toy);
-    context.stroke();
-    if( draw_arrow ) {
-        context.beginPath();
-        context.moveTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
-        context.lineTo(tox, toy);
-        context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
-        context.stroke();
-    }
-}
-
 function drawThings() {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
@@ -498,4 +478,24 @@ function drawThings() {
     }
 }
 
-window.onload = requestFreshData;
+// adapted from http://stackoverflow.com/a/6333775/126823
+function canvas_arrow(context, fromx, fromy, tox, toy, draw_arrow){
+    var headlen = 10; // length of head in pixels
+    var end_gap = 20; // distance of head and tail from requested positions
+    var angle = Math.atan2(toy-fromy,tox-fromx);
+    fromx += end_gap * Math.cos(angle);
+    fromy += end_gap * Math.sin(angle);
+    tox -= end_gap * Math.cos(angle);
+    toy -= end_gap * Math.sin(angle);
+    context.beginPath();
+    context.moveTo(fromx, fromy);
+    context.lineTo(tox, toy);
+    context.stroke();
+    if( draw_arrow ) {
+        context.beginPath();
+        context.moveTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+        context.lineTo(tox, toy);
+        context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+        context.stroke();
+    }
+}
