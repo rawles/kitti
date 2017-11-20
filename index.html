@@ -469,7 +469,11 @@ function setFilteredUsers(f) {
 function processData() {
     getFilteredUsers();
     
-    var log_html = "<hr><h2>Parsed transactions (those involving "+filter_users.join(',')+")</h2>\n<dl>\n";
+    var log_html = "<hr><h2>Parsed transactions"
+    if(filter_users.length > 0) {
+        log_html += " (those involving "+filter_users.join(',')+")";
+    }
+    log_html += "</h2>\n<dl>\n";
     for( var i in log_lines ) {
         var line = log_lines[i];
         var comments = parseLine( line );
