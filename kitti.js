@@ -53,7 +53,6 @@ function storeNames( text ) {
             known_identifiers.push( entries[ j ] );
         }
     }
-    transition_matrix = matrix_zeros( names.length );
 }
 
 function checkAllLoaded() {
@@ -65,19 +64,21 @@ function checkAllLoaded() {
 }
 
 function processData() {
+    // clear results
     total_transactions = 0;
     num_transactions = 0;
     for( var i_name in names ) {
         var person = names[ i_name ];
         people[ person ].credit = 0.0;
     }
+    transition_matrix = matrix_zeros( names.length );
     
     var log_html="";
     if( !noneInSubset() ) {
         log_html = "<hr><h2>Parsed transactions"
         if( !allInSubset() ) {
             var included = getUserSubsetAsString();
-            log_html += " (those involving "+included+")";
+            log_html += " (those involving only "+included+")";
         }
         log_html += "</h2>\n<dl>\n";
         for( var i in log_lines ) {
@@ -130,19 +131,16 @@ function parseLine( line ) {
         return comments;
     }
 
-    // does this transaction involve any of the selected users?
-    var found_filtered_users = false;
+    // exclude transactions that involve people not present
     for( var j in transaction_tokens ) {
         var token = transaction_tokens[j];
         var creditor_subtokens = token.match( new RegExp( creditor_match, "i" ) );
         var debtor_subtokens = token.match( new RegExp( debtor_match, "i" ) );
-        if( (creditor_subtokens && people[ creditor_subtokens[3] ].present) ||
-            (debtor_subtokens && people[ debtor_subtokens[1] ].present) ) {
-            found_filtered_users = true;
-            break;
+        if( (creditor_subtokens && !people[ creditor_subtokens[3] ].present) ||
+            (debtor_subtokens && !people[ debtor_subtokens[1] ].present) ) {
+                return "";
         }
     }
-    if(!found_filtered_users) { return ""; }
 
     var totalCredited = 0.0;
     var weightedDebtors = new Object();
