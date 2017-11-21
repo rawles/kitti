@@ -358,7 +358,11 @@ function printStatus() {
                 number_css_class = "number-currency-negative";
         }
         html += "<tr>"
-             + "<td><label class=\"switch\"><input type=\"checkbox\" checked onchange=\"handleToggle(&quot;"+person.full+"&quot;);\"><span class=\"slider round\"></span></label></td>"
+             + "<td><label class=\"switch\"><input type=\"checkbox\" ";
+        if(person.present) {
+            html += "checked ";
+        }
+        html += "onchange=\"handleToggle(&quot;"+person.full+"&quot;);\"><span class=\"slider round\"></span></label></td>"
              + "<td>" + person.full + "</td><td>"
              + String.fromCharCode(163) + "</td><td class=\"" + number_css_class + "\">" + person.credit.toFixed(2) + "</td></tr>";
     }
