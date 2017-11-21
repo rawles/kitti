@@ -46,6 +46,7 @@ function storeNames( text ) {
         people[ full_name ].credit = 0.0;
         people[ full_name ].index = person_index;
         people[ full_name ].abbreviations = entries.slice(1,entries.length);
+        people[ full_name ].present = true;
         person_index++;
         names.push( full_name );
         for( var j = 1; j < entries.length; ++j ) {
@@ -333,12 +334,21 @@ function getUserSubsetAsString() {
 
 function printStatus() {
     var html = "";
-    var included = getUserSubsetAsString();
-    if(included != "") {
-        html += "<p>Currently showing only transactions that involve " + included + ".";
+
+    if(allInSubset()) {
+        html += "<p>Currently showing all transactions because everybody is included. "
+             +  " <a href=\"javascript:includeNoneInSubset();\">Remove all.</a>";
     }
-    html += "<a href=\"javascript:includeAllInSubset();\">Include all.</a>";
-    html += " <a href=\"javascript:includeNoneInSubset();\">Remove all.</a>";
+    else if(noneInSubset()) {
+        html += "<p>Currently showing no transactions because nobody is included. "
+             +  "<a href=\"javascript:includeAllInSubset();\">Include all.</a>";
+    }
+    else {
+        var included = getUserSubsetAsString();
+        html += "<p>Currently showing only transactions that involve " + included + ". "
+             +  "<a href=\"javascript:includeAllInSubset();\">Include all.</a> "
+             +  "<a href=\"javascript:includeNoneInSubset();\">Remove all.</a>";
+    }
 
     html +="<table>\n<tr><th></th><th>Person</th><th colspan=\"2\" class=\"number\">Kitti owes</th></tr>\n";
     for( var i in names ) {
