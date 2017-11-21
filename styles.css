@@ -1,3 +1,5 @@
+/* ------------ Formatting for the table --------------- */
+
 table {
 color: #333;
 font-family: Helvetica, Arial, sans-serif;
@@ -22,6 +24,8 @@ text-align: left;
 tr:nth-child(even) td { background: #F1F1F1; } 
 /* Cells in odd rows (1,3,5...) are another (excludes header cells) */
 tr:nth-child(odd) td { background: #FEFEFE; }
+
+/* ----------- Formatting for the toggle switches ----------- */
 
 .switch {
   position: relative;
