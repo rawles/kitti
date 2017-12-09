@@ -129,3 +129,4 @@
 2017-05-23T21:00  BFGLJ:218F                  Riverside Restaurant after geofun
 2017-10-29T22:30  Y,B,F,G,L:322.03G           Hotel du Vin.
 2017-11-16T21:00  KFB:34F.                    Pizza in Salisbury Arms
+2017-12-09T15:54  M,B:37B                     Lunch at Thela, CB2 1DP
