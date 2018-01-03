@@ -130,3 +130,26 @@
 2017-10-29T22:30  Y,B,F,G,L:322.03G           Hotel du Vin.
 2017-11-16T21:00  KFB:34F.                    Pizza in Salisbury Arms
 2017-12-09T15:54  M,B:37B                     Lunch at Thela, CB2 1DP
+
+2017-12-28T18:30 RPB:14.30B Walnut Chip Shop, Ambleside
+2017-12-28T17:52 RB:11.90B Beer, Ambleside
+2017-12-28T10:44 RPB:2.00B Co-op, Ambleside
+2017-12-26T16:05 RPB:8.78B Tesco, Ambleside
+2017-12-24T11:03 RPB:5.78B Tesco, Ambleside
+2017-12-23T10:57 RPB:3.00B Car Park, Ambleside
+2017-12-20T12:00 RPB:6.00B Tesco, Ambleside
+2017-12-21T18:17 RPB:10.45B Tesco, Ambleside
+2017-12-21T17:40 RPB:18.95B Beer, Ambleside
+2017-12-21T17:31 RPB:33.43B Tesco, Ambleside
+
+2017-12-29T12:00 RPB:14.00R Four packs of gingerbread
+2017-12-29T12:00 RPB:5.50R Supermarket misc
+2017-12-29T12:00 RPB:19.50R Deli
+2017-12-29T12:00 RB:3.50R Freshers cafe coffee
+2017-12-29T12:00 RB:12.35R Apple Pie cafe 
+2017-12-29T12:00 RPB:6R Apple Pie bakery
+2017-12-29T12:00 RPB:27R Sour dough Pizza
+2017-12-29T12:00 RPB:205R Booths
+2017-12-29T12:00 RPB:2R White Moss parking
+2017-12-29T12:00 RPB:50R Tesco
+
