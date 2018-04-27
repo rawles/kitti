@@ -154,3 +154,8 @@
 2017-12-29T12:00 RPB:50R Tesco
 
 2018-01-03T13:18 R:76.64B Kitti Balance for RPB.
+
+2018-04-19T12:00 B:7.50C Sleepy beer
+2018-04-19T12:00 B:3S Groceries from Tesco
+2018-04-19T12:00 B:10.33S A new router
+
