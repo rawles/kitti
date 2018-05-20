@@ -155,4 +155,6 @@
 2018-04-19T12:00 B:3S Groceries from Tesco
 2018-04-19T12:00 B:10.33S A new router
 2018-05-05T17:52 BMF:47.45B Nivedyam, Cambridge.
-
+2018-05-10T15:00 B:14.00R Beekeeping book
+2018-05-09T22:00 C:10.00B Beekeeping deposit
+2018-05-09T23:00 B:5.00S Pizza and beer from Afro World
