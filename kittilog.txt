@@ -159,3 +159,5 @@
 2018-05-09T22:00 C:10.00B Beekeeping deposit
 2018-05-09T23:00 B:5.00S Pizza and beer from Afro World
 2018-05-30T15:00 SC:12B Bagel run to Shalom
+2018-06-18T20:30 SC:9.80B Bagel run to Beigel Bake
+
