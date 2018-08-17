@@ -165,4 +165,5 @@
 2018-06-23T18:00 MBFST:15F Taxis back from JAPG
 2018-07-23T14:30 B:10.00C Beekeeping deposit
 2018-08-01T20:00 BS:36.00B Two bottles of rum
+2018-08-17T22:00 SBC:15S Pizza night!
 
